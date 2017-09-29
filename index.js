@@ -143,3 +143,6 @@ module.exports.getFirstExistingParentPath = directoryPath => {
 
   return parentDirectoryPath
 }
+
+module.exports.InvalidPathError = InvalidPathError
+module.exports.NoMatchError = NoMatchError
