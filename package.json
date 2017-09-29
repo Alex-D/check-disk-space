@@ -1,14 +1,23 @@
 {
   "name": "check-disk-space",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Light multiplartform disk space checker without third party for Node.js",
   "main": "index.js",
   "dependencies": {},
   "devDependencies": {
-    "ava": "0.22.0"
+    "ava": "0.22.0",
+    "eslint-plugin-ava": "^4.2.2",
+    "npm-run-all": "^4.1.1",
+    "xo": "^0.18.2"
+  },
+  "xo": {
+    "space": true,
+    "semicolon": false
   },
   "scripts": {
-    "test": "ava --color"
+    "unit-test": "ava --color",
+    "lint": "xo",
+    "test": "npm-run-all unit-test lint"
   },
   "repository": {
     "type": "git",
