@@ -1,8 +1,13 @@
 # Check disk space
 
+[![Travis](https://img.shields.io/travis/Alex-D/check-disk-space.svg)](https://travis-ci.org/Alex-D/check-disk-space)
+[![License MIT](https://img.shields.io/github/license/Alex-D/check-disk-space.svg)](LICENCE)
+
 ## Install
 
 `npm install check-disk-space`
+
+## Usage
 
 ```js
 const checkDiskSpace = require('check-disk-space')
