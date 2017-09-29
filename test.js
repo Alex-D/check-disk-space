@@ -63,7 +63,7 @@ const platformFixtures = {
       }
     }
   ],
-  unix: [
+  linux: [
     {
       title: 'bananian',
       path: '/dev',
@@ -99,7 +99,9 @@ const platformFixtures = {
         free: 39278628 * 1024,
         size: 240234168 * 1024
       }
-    },
+    }
+  ],
+  darwin: [
     {
       title: 'macOS',
       path: '/home/jacquie',
@@ -132,6 +134,19 @@ function mockCheckDiskSpace(platform, fixture) {
   return require('./')
 }
 
+function mockGetFirstExistingParentPath(existingDirectoryPath) {
+  // Clean some required paths
+  delete require.cache[require.resolve('./')]
+
+  // Forces the platform for test purposes
+  Object.defineProperty(process, 'platform', {value: 'linux'})
+
+  // Mock child_process.exec
+  require('fs').existsSync = directoryPath => directoryPath === existingDirectoryPath
+
+  return require('./').getFirstExistingParentPath
+}
+
 Object.keys(platformFixtures).forEach(platform => {
   platformFixtures[platform].forEach(fixture => {
     test(`${platform}: ${fixture.title}`, async t => {
@@ -145,7 +160,19 @@ Object.keys(platformFixtures).forEach(platform => {
 test(`win32: path did not match any disk`, async t => {
   const checkDiskSpace = mockCheckDiskSpace('win32', platformFixtures.win32[0])
   const error = await t.throws(checkDiskSpace('Z:/shouldfail'))
-  t.is(error.message, 'Path did not match any drive')
+  t.is(error.name, 'NoMatchError')
+})
+
+test(`win32: invalid path`, async t => {
+  const checkDiskSpace = mockCheckDiskSpace('win32', platformFixtures.win32[0])
+  const error = await t.throws(checkDiskSpace('an invalid path'))
+  t.is(error.name, 'InvalidPathError')
+})
+
+test(`unix: invalid path`, async t => {
+  const checkDiskSpace = mockCheckDiskSpace('linux', platformFixtures.linux[0])
+  const error = await t.throws(checkDiskSpace('an invalid path'))
+  t.is(error.name, 'InvalidPathError')
 })
 
 test(`exec has an error`, async t => {
@@ -155,4 +182,16 @@ test(`exec has an error`, async t => {
   const checkDiskSpace = mockCheckDiskSpace('win32', fixture)
   const error = await t.throws(checkDiskSpace('C:/something'))
   t.is(error.message, 'some error')
+})
+
+test(`unix: get first existing parent path`, t => {
+  const parentPath = '/home/Lisa'
+  const getFirstExistingParentPath = mockGetFirstExistingParentPath(parentPath)
+  t.is(getFirstExistingParentPath('/home/Lisa/games/Ankama/Dofus'), parentPath)
+})
+
+test(`unix: get first parent can be the path itself`, t => {
+  const parentPath = '/home/Lisa'
+  const getFirstExistingParentPath = mockGetFirstExistingParentPath(parentPath)
+  t.is(getFirstExistingParentPath(parentPath), parentPath)
 })

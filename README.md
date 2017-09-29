@@ -2,6 +2,7 @@
 
 [![Travis](https://img.shields.io/travis/Alex-D/check-disk-space.svg)](https://travis-ci.org/Alex-D/check-disk-space)
 [![License MIT](https://img.shields.io/github/license/Alex-D/check-disk-space.svg)](LICENCE)
+[![XO code style](https://img.shields.io/badge/code_style-XO-5ed9c7.svg)](https://github.com/sindresorhus/xo)
 
 ## Install
 
