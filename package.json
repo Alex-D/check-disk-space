@@ -1,0 +1,29 @@
+{
+  "name": "check-disk-space",
+  "version": "1.0.0",
+  "description": "Light multiplartform disk space checker without third party for Node.js",
+  "main": "index.js",
+  "dependencies": {},
+  "devDependencies": {
+    "ava": "0.22.0"
+  },
+  "scripts": {
+    "test": "ava --color"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Alex-D/check-disk-space.git"
+  },
+  "keywords": [
+    "disk",
+    "space",
+    "hdd",
+    "free"
+  ],
+  "author": "Alex-D <contact@alex-d.fr> (http://alex-d.fr)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Alex-D/check-disk-space/issues"
+  },
+  "homepage": "https://github.com/Alex-D/check-disk-space#readme"
+}
