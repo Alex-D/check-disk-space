@@ -113,7 +113,7 @@ function checkUnix(directoryPath) {
   }
 
   return check(
-    `df -Pk ${module.exports.getFirstExistingParentPath(directoryPath)}`,
+    `df -Pk "${module.exports.getFirstExistingParentPath(directoryPath)}"`,
     () => true, // We should only get one line, so we did not need to filter
     {
       free: 3,
