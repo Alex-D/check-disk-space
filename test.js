@@ -15,6 +15,7 @@ const platformFixtures = {
           F:       834660716544  2000396742656
       `,
       result: {
+        diskPath: 'D:',
         free: 0,
         size: 699783168
       }
@@ -32,6 +33,7 @@ const platformFixtures = {
           L:
       `,
       result: {
+        diskPath: 'C:',
         free: 1286164480,
         size: 34359734272
       }
@@ -45,6 +47,7 @@ const platformFixtures = {
           D:       0             59494400
       `,
       result: {
+        diskPath: 'D:',
         free: 0,
         size: 59494400
       }
@@ -58,6 +61,7 @@ const platformFixtures = {
           D:       0             4001759232
       `,
       result: {
+        diskPath: 'C:',
         free: 159345410048,
         size: 171204145152
       }
@@ -72,6 +76,7 @@ const platformFixtures = {
           devtmpfs          447624       0    447624   0% /dev
       `,
       result: {
+        diskPath: '/dev',
         free: 447624 * 1024,
         size: 447624 * 1024
       }
@@ -84,6 +89,7 @@ const platformFixtures = {
           tmpfs                89884       8     89876       1% /run/user/1000
       `,
       result: {
+        diskPath: '/run/user/1000',
         free: 89876 * 1024,
         size: 89884 * 1024
       }
@@ -96,6 +102,7 @@ const platformFixtures = {
           /dev/sdc         240234168    188729228 39278628         83% /media/Games
       `,
       result: {
+        diskPath: '/media/Games',
         free: 39278628 * 1024,
         size: 240234168 * 1024
       }
@@ -110,6 +117,7 @@ const platformFixtures = {
           /dev/disk0s2    145961032 20678788 125026244    15%    /home
       `,
       result: {
+        diskPath: '/home',
         free: 125026244 * 1024,
         size: 145961032 * 1024
       }

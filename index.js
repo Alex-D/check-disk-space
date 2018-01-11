@@ -42,6 +42,7 @@ function mapOutput(stdout, filter, mapping, coefficient = 1) {
   filtered = filtered[0]
 
   return {
+    diskPath: filtered[mapping.diskPath],
     free: parseInt(filtered[mapping.free], 10) * coefficient,
     size: parseInt(filtered[mapping.size], 10) * coefficient
   }
@@ -93,6 +94,7 @@ function checkWin32(directoryPath) {
       return directoryPath.startsWith(driveLetter)
     },
     {
+      diskPath: 0,
       free: 1,
       size: 2
     }
@@ -116,6 +118,7 @@ function checkUnix(directoryPath) {
     `df -Pk "${module.exports.getFirstExistingParentPath(directoryPath)}"`,
     () => true, // We should only get one line, so we did not need to filter
     {
+      diskPath: 5,
       free: 3,
       size: 1
     },
