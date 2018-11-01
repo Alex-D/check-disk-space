@@ -32,6 +32,10 @@ util.inherits(NoMatchError, Error)
 function mapOutput(stdout, filter, mapping, coefficient = 1) {
   const parsed = stdout.trim().split('\n').slice(1).map(line => {
     return line.trim().split(/\s+(?=[\d/])/)
+  }).map((driveDiskData) => {
+    // normalize drive case
+    driveDiskData[0] = driveDiskData[0].toLowerCase()
+    return driveDiskData
   })
 
   let filtered = parsed.filter(filter)
@@ -90,7 +94,7 @@ function checkWin32(directoryPath) {
     `wmic logicaldisk get size,freespace,caption`,
     driveData => {
       // Only get the drive which match the path
-      const driveLetter = driveData[0]
+      const driveLetter = driveData[0].toLowerCase()
       return directoryPath.startsWith(driveLetter)
     },
     {
