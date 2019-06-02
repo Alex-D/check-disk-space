@@ -11,6 +11,7 @@ const InvalidPathError = function (message) {
   this.name = 'InvalidPathError'
   this.message = message || ''
 }
+
 util.inherits(InvalidPathError, Error)
 
 const NoMatchError = function (message) {
@@ -18,6 +19,7 @@ const NoMatchError = function (message) {
   this.name = 'NoMatchError'
   this.message = message || ''
 }
+
 util.inherits(NoMatchError, Error)
 
 /**
@@ -39,6 +41,7 @@ function mapOutput(stdout, filter, mapping, coefficient = 1) {
   if (filtered.length === 0) {
     throw new NoMatchError()
   }
+
   filtered = filtered[0]
 
   return {
@@ -66,8 +69,8 @@ function check(cmd, filter, mapping, coefficient = 1) {
 
       try {
         resolve(mapOutput(stdout, filter, mapping, coefficient))
-      } catch (err) {
-        reject(err)
+      } catch (error2) {
+        reject(error2)
       }
     })
   })
@@ -87,7 +90,7 @@ function checkWin32(directoryPath) {
   }
 
   return check(
-    `wmic logicaldisk get size,freespace,caption`,
+    'wmic logicaldisk get size,freespace,caption',
     driveData => {
       // Only get the drive which match the path
       const driveLetter = driveData[0]
@@ -132,8 +135,8 @@ module.exports = (process.platform === 'win32') ? checkWin32 : checkUnix
 /**
  * Get the first existing parent path
  *
- * @param directoryPath
- * @returns {*}
+ * @param {String} directoryPath - The file/folder path from where we want to know disk space
+ * @returns {String} - The first existing parent path
  */
 module.exports.getFirstExistingParentPath = directoryPath => {
   let parentDirectoryPath = directoryPath
