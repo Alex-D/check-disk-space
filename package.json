@@ -3,6 +3,9 @@
   "version": "2.0.0",
   "description": "Light multi-platform disk space checker without third party for Node.js",
   "main": "index.js",
+  "engines" : {
+    "node" : ">=8"
+  },
   "dependencies": {},
   "devDependencies": {
     "ava": "^2.0.0",
