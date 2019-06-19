@@ -33,6 +33,7 @@
     "hdd",
     "free"
   ],
+  "types": "./typings/index.d.ts",
   "author": "Alex-D <contact@alex-d.fr> (http://alex-d.fr)",
   "license": "MIT",
   "bugs": {
