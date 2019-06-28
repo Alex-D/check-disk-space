@@ -1,10 +1,10 @@
 {
   "name": "check-disk-space",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "Light multi-platform disk space checker without third party for Node.js",
   "main": "index.js",
-  "engines" : {
-    "node" : ">=8"
+  "engines": {
+    "node": ">=8"
   },
   "dependencies": {},
   "devDependencies": {
