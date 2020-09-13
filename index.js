@@ -1,6 +1,6 @@
 'use strict'
 
-const { exec } = require('child_process')
+const {exec} = require('child_process')
 const fs = require('fs')
 const path = require('path')
 const util = require('util')
