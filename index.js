@@ -3,24 +3,7 @@
 const {exec} = require('child_process')
 const fs = require('fs')
 const path = require('path')
-const util = require('util')
-
-// Create some errors
-const InvalidPathError = function (message) {
-  Error.captureStackTrace(this, this.constructor)
-  this.name = 'InvalidPathError'
-  this.message = message || ''
-}
-
-util.inherits(InvalidPathError, Error)
-
-const NoMatchError = function (message) {
-  Error.captureStackTrace(this, this.constructor)
-  this.name = 'NoMatchError'
-  this.message = message || ''
-}
-
-util.inherits(NoMatchError, Error)
+const {InvalidPathError, NoMatchError} = require('./errors')
 
 /**
  * Maps command output to a normalized object {free, size}
@@ -60,18 +43,19 @@ function mapOutput(stdout, filter, mapping, coefficient = 1) {
  * @param {Number} coefficient - The size coefficient to get bytes instead of kB
  * @return {Promise} -
  */
-function check(cmd, filter, mapping, coefficient = 1) {
+async function check(cmd, filter, mapping, coefficient = 1) {
+  const response = await _exec(cmd)
+  return mapOutput(response, filter, mapping, coefficient)
+}
+
+function _exec(cmd) {
   return new Promise((resolve, reject) => {
     exec(cmd, (error, stdout) => {
       if (error) {
         return reject(error)
       }
 
-      try {
-        resolve(mapOutput(stdout, filter, mapping, coefficient))
-      } catch (error2) {
-        reject(error2)
-      }
+      return resolve(stdout)
     })
   })
 }
@@ -82,11 +66,9 @@ function check(cmd, filter, mapping, coefficient = 1) {
  * @param {String} directoryPath - The file/folder path from where we want to know disk space
  * @return {Promise} -
  */
-function checkWin32(directoryPath) {
+async function checkWin32(directoryPath) {
   if (directoryPath.charAt(1) !== ':') {
-    return new Promise((resolve, reject) => {
-      reject(new InvalidPathError(`The following path is invalid (should be X:\\...): ${directoryPath}`))
-    })
+    throw new InvalidPathError(`The following path is invalid (should be X:\\...): ${directoryPath}`)
   }
 
   return check(
@@ -110,11 +92,9 @@ function checkWin32(directoryPath) {
  * @param {String} directoryPath - The file/folder path from where we want to know disk space
  * @return {Promise} -
  */
-function checkUnix(directoryPath) {
+async function checkUnix(directoryPath) {
   if (!path.normalize(directoryPath).startsWith(path.sep)) {
-    return new Promise((resolve, reject) => {
-      reject(new InvalidPathError(`The following path is invalid (should start by ${path.sep}): ${directoryPath}`))
-    })
+    throw new InvalidPathError(`The following path is invalid (should start by ${path.sep}): ${directoryPath}`)
   }
 
   return check(
