@@ -3,7 +3,29 @@
 const {exec} = require('child_process')
 const fs = require('fs')
 const path = require('path')
-const {InvalidPathError, NoMatchError} = require('./errors')
+const util = require('util')
+
+// Create some errors
+const InvalidPathError = function (message) {
+  Error.captureStackTrace(this, this.constructor)
+  this.name = 'InvalidPathError'
+  this.message = message || ''
+}
+
+util.inherits(InvalidPathError, Error)
+
+const NoMatchError = function (message) {
+  Error.captureStackTrace(this, this.constructor)
+  this.name = 'NoMatchError'
+  this.message = message || ''
+}
+
+util.inherits(NoMatchError, Error)
+
+module.exports = {
+  InvalidPathError,
+  NoMatchError
+}
 
 /**
  * Maps command output to a normalized object {free, size}
