@@ -1,6 +1,6 @@
 'use strict'
 
-const {exec} = require('child_process')
+const { exec } = require('child_process')
 const fs = require('fs')
 const path = require('path')
 const util = require('util')
@@ -64,7 +64,7 @@ function check(cmd, filter, mapping, coefficient = 1) {
   return new Promise((resolve, reject) => {
     exec(cmd, (error, stdout) => {
       if (error) {
-        reject(error)
+        return reject(error)
       }
 
       try {
