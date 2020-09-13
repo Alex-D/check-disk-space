@@ -22,11 +22,6 @@ const NoMatchError = function (message) {
 
 util.inherits(NoMatchError, Error)
 
-module.exports = {
-  InvalidPathError,
-  NoMatchError
-}
-
 /**
  * Maps command output to a normalized object {free, size}
  *
