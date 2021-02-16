@@ -132,8 +132,8 @@ function mockCheckDiskSpace(platform, fixture) {
   // Forces the platform for test purposes
   Object.defineProperty(process, 'platform', {value: platform})
 
-  // Mock child_process.exec
-  require('child_process').exec = (cmd, callback) => {
+  // Mock child_process.execFile
+  require('child_process').execFile = (cmd.shift(), cmd, callback) => {
     process.nextTick(() => {
       callback(fixture.execError, fixture.execOutput)
     })
