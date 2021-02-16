@@ -1,6 +1,6 @@
 'use strict'
 
-const {exec} = require('child_process')
+const {execFile} = require('child_process')
 const fs = require('fs')
 const path = require('path')
 const util = require('util')
@@ -54,7 +54,7 @@ function mapOutput(stdout, filter, mapping, coefficient = 1) {
 /**
  * Run the command and do common things between win32 and unix
  *
- * @param {String} cmd - The command to execute
+ * @param {String} cmd - The command to execute (must be in list/array)
  * @param {Function} filter - To filter drives (only used for win32)
  * @param {Object} mapping - Map between column index and normalized column name
  * @param {Number} coefficient - The size coefficient to get bytes instead of kB
@@ -62,7 +62,7 @@ function mapOutput(stdout, filter, mapping, coefficient = 1) {
  */
 function check(cmd, filter, mapping, coefficient = 1) {
   return new Promise((resolve, reject) => {
-    exec(cmd, (error, stdout) => {
+    execFile(cmd.shift(), cmd, (error, stdout) => {
       if (error) {
         reject(error)
       }
@@ -90,7 +90,7 @@ function checkWin32(directoryPath) {
   }
 
   return check(
-    'wmic logicaldisk get size,freespace,caption',
+    ['wmic', 'logicaldisk', 'get', 'size,freespace,caption'],
     driveData => {
       // Only get the drive which match the path
       const driveLetter = driveData[0]
@@ -118,7 +118,7 @@ function checkUnix(directoryPath) {
   }
 
   return check(
-    `df -Pk "${module.exports.getFirstExistingParentPath(directoryPath)}"`,
+    ['df', '-Pk', '--', module.exports.getFirstExistingParentPath(directoryPath)],
     () => true, // We should only get one line, so we did not need to filter
     {
       diskPath: 5,
