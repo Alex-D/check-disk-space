@@ -55,7 +55,7 @@ function mapOutput(stdout, filter, mapping, coefficient = 1) {
  * Run the command and do common things between win32 and unix
  *
  * @param {String} file - The file to execute
- * @param {String} args - Arguments of the file
+ * @param {String[]} args - Arguments of the file
  * @param {Function} filter - To filter drives (only used for win32)
  * @param {Object} mapping - Map between column index and normalized column name
  * @param {Number} coefficient - The size coefficient to get bytes instead of kB
