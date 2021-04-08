@@ -94,7 +94,7 @@ function checkWin32(directoryPath) {
     driveData => {
       // Only get the drive which match the path
       const driveLetter = driveData[0]
-      return directoryPath.startsWith(driveLetter)
+      return directoryPath.toUpperCase().startsWith(driveLetter.toUpperCase())
     },
     {
       diskPath: 0,
