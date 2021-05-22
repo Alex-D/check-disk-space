@@ -131,7 +131,7 @@ function checkDiskSpace(directoryPath: string, dependencies: Dependencies = {
 		const pathToCheck = getFirstExistingParentPath(directoryPath, dependencies)
 
 		return check(
-			['df', '-Pk', '--', `"${pathToCheck}"`],
+			['df', '-Pk', '--', pathToCheck],
 			() => true, // We should only get one line, so we did not need to filter
 			{
 				diskPath: 5,

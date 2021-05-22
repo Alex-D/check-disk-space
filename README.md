@@ -11,12 +11,17 @@
 ## Usage
 
 ```js
-const checkDiskSpace = require('check-disk-space')
+// ES
+import checkDiskSpace from 'check-disk-space'
+
+// CommonJS
+const checkDiskSpace = require('check-disk-space').default
 
 // On Windows
 checkDiskSpace('C:/blabla/bla').then((diskSpace) => {
     console.log(diskSpace)
     // {
+    //     diskPath: 'C:',
     //     free: 12345678,
     //     size: 98756432
     // }
@@ -26,6 +31,7 @@ checkDiskSpace('C:/blabla/bla').then((diskSpace) => {
 checkDiskSpace('/mnt/mygames').then((diskSpace) => {
     console.log(diskSpace)
     // {
+    //     diskPath: '/',
     //     free: 12345678,
     //     size: 98756432
     // }
