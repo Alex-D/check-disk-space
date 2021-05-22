@@ -1,3 +1,6 @@
+/**
+ * @public
+ */
 type DiskSpace = {
 	diskPath: string,
 	free: number,

@@ -1,3 +1,5 @@
 dist/
+types/
+temp/
 node_modules/
 .idea/

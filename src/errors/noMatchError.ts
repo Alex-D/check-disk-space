@@ -1,3 +1,6 @@
+/**
+ * @public
+ */
 class NoMatchError extends Error {
 	name = 'NoMatchError'
 

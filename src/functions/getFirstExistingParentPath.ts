@@ -2,10 +2,10 @@ import Dependencies from '@/src/types/dependencies'
 
 /**
  * Get the first existing parent path
+ * @public
  *
- * @param {String} directoryPath - The file/folder path from where we want to know disk space
- * @param {Object} dependencies - Dependencies container
- * @returns {String} - The first existing parent path
+ * @param directoryPath - The file/folder path from where we want to know disk space
+ * @param dependencies - Dependencies container
  */
 function getFirstExistingParentPath(directoryPath: string, dependencies: Dependencies): string {
 	let parentDirectoryPath = directoryPath

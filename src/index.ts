@@ -9,11 +9,11 @@ import Dependencies from '@/src/types/dependencies'
 import DiskSpace from '@/src/types/diskSpace'
 
 /**
- * Call the right check depending on the OS
+ * Check disk space
+ * @public
  *
- * @param {String} directoryPath - The file/folder path from where we want to know disk space
- * @param {Object} dependencies - Dependencies container
- * @return {Promise<DiskSpace>} - {diskPath, free, size} normalized object
+ * @param directoryPath - The file/folder path from where we want to know disk space
+ * @param dependencies - Dependencies container
  */
 function checkDiskSpace(directoryPath: string, dependencies: Dependencies = {
 	platform: process.platform,
@@ -25,11 +25,10 @@ function checkDiskSpace(directoryPath: string, dependencies: Dependencies = {
 	/**
 	 * Maps command output to a normalized object {diskPath, free, size}
 	 *
-	 * @param {String} stdout - The command output
-	 * @param {Function} filter - To filter drives (only used for win32)
-	 * @param {Object} mapping - Map between column index and normalized column name
-	 * @param {Number} coefficient - The size coefficient to get bytes instead of kB
-	 * @return {Object} - {diskPath, free, size} normalized object
+	 * @param stdout - The command output
+	 * @param filter - To filter drives (only used for win32)
+	 * @param mapping - Map between column index and normalized column name
+	 * @param coefficient - The size coefficient to get bytes instead of kB
 	 */
 	function mapOutput(
 		stdout: string,
@@ -59,11 +58,10 @@ function checkDiskSpace(directoryPath: string, dependencies: Dependencies = {
 	/**
 	 * Run the command and do common things between win32 and unix
 	 *
-	 * @param {String} cmd - The command to execute
-	 * @param {Function} filter - To filter drives (only used for win32)
-	 * @param {Object} mapping - Map between column index and normalized column name
-	 * @param {Number} coefficient - The size coefficient to get bytes instead of kB
-	 * @return {Promise<DiskSpace>} - {diskPath, free, size} normalized object
+	 * @param cmd - The command to execute
+	 * @param filter - To filter drives (only used for win32)
+	 * @param mapping - Map between column index and normalized column name
+	 * @param coefficient - The size coefficient to get bytes instead of kB
 	 */
 	function check(
 		cmd: string[],
@@ -94,8 +92,7 @@ function checkDiskSpace(directoryPath: string, dependencies: Dependencies = {
 	/**
 	 * Build the check call for win32
 	 *
-	 * @param {String} directoryPath - The file/folder path from where we want to know disk space
-	 * @return {Promise<DiskSpace>} - {diskPath, free, size} normalized object
+	 * @param directoryPath - The file/folder path from where we want to know disk space
 	 */
 	function checkWin32(directoryPath: string): Promise<DiskSpace> {
 		if (directoryPath.charAt(1) !== ':') {
@@ -122,8 +119,7 @@ function checkDiskSpace(directoryPath: string, dependencies: Dependencies = {
 	/**
 	 * Build the check call for unix
 	 *
-	 * @param {String} directoryPath - The file/folder path from where we want to know disk space
-	 * @return {Promise<DiskSpace>} - {diskPath, free, size} normalized object
+	 * @param directoryPath - The file/folder path from where we want to know disk space
 	 */
 	function checkUnix(directoryPath: string): Promise<DiskSpace> {
 		if (!dependencies.pathNormalize(directoryPath).startsWith(dependencies.pathSep)) {
@@ -157,6 +153,8 @@ function checkDiskSpace(directoryPath: string, dependencies: Dependencies = {
 
 export default checkDiskSpace
 export {
+	Dependencies,
+	DiskSpace,
 	InvalidPathError,
 	NoMatchError,
 	getFirstExistingParentPath,

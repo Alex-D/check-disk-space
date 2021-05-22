@@ -1,3 +1,6 @@
+/**
+ * @public
+ */
 class InvalidPathError extends Error {
 	name = 'InvalidPathError'
 
