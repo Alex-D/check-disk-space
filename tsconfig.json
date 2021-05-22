@@ -1,0 +1,20 @@
+{
+	"$schema": "http://json.schemastore.org/tsconfig",
+  "compilerOptions": {
+    "strict": true,
+    "module": "es6",
+    "moduleResolution": "node",
+    "target": "es6",
+    "isolatedModules": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/src/*": ["src/*"]
+    },
+    "outDir": "dist"
+  },
+  "include": [
+    "**/src/**/*.ts",
+    "*.ts",
+    "**.js"
+  ]
+}
