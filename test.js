@@ -17,8 +17,8 @@ const platformFixtures = {
       result: {
         diskPath: 'D:',
         free: 0,
-        size: 699783168
-      }
+        size: 699783168,
+      },
     },
     {
       title: 'Windows 7',
@@ -35,8 +35,8 @@ const platformFixtures = {
       result: {
         diskPath: 'C:',
         free: 1286164480,
-        size: 34359734272
-      }
+        size: 34359734272,
+      },
     },
     {
       title: 'Windows 8',
@@ -49,8 +49,8 @@ const platformFixtures = {
       result: {
         diskPath: 'D:',
         free: 0,
-        size: 59494400
-      }
+        size: 59494400,
+      },
     },
     {
       title: 'Windows 10',
@@ -63,9 +63,9 @@ const platformFixtures = {
       result: {
         diskPath: 'C:',
         free: 159345410048,
-        size: 171204145152
-      }
-    }
+        size: 171204145152,
+      },
+    },
   ],
   linux: [
     {
@@ -78,8 +78,8 @@ const platformFixtures = {
       result: {
         diskPath: '/dev',
         free: 447624 * 1024,
-        size: 447624 * 1024
-      }
+        size: 447624 * 1024,
+      },
     },
     {
       title: 'Ubuntu',
@@ -91,8 +91,8 @@ const platformFixtures = {
       result: {
         diskPath: '/run/user/1000',
         free: 89876 * 1024,
-        size: 89884 * 1024
-      }
+        size: 89884 * 1024,
+      },
     },
     {
       title: 'Ubuntu: russian locale',
@@ -104,9 +104,9 @@ const platformFixtures = {
       result: {
         diskPath: '/media/Games',
         free: 39278628 * 1024,
-        size: 240234168 * 1024
-      }
-    }
+        size: 240234168 * 1024,
+      },
+    },
   ],
   darwin: [
     {
@@ -119,10 +119,10 @@ const platformFixtures = {
       result: {
         diskPath: '/home',
         free: 125026244 * 1024,
-        size: 145961032 * 1024
-      }
-    }
-  ]
+        size: 145961032 * 1024,
+      },
+    },
+  ],
 }
 
 function mockCheckDiskSpace(platform, fixture) {
@@ -193,13 +193,13 @@ test('exec has an error', async t => {
 })
 
 test('unix: get first existing parent path', t => {
-  const parentPath = '/home/Lisa'
+  const parentPath = '/home/Alex'
   const getFirstExistingParentPath = mockGetFirstExistingParentPath(parentPath)
-  t.is(getFirstExistingParentPath('/home/Lisa/games/Ankama/Dofus'), parentPath)
+  t.is(getFirstExistingParentPath('/home/Alex/games/Some/Game'), parentPath)
 })
 
 test('unix: get first parent can be the path itself', t => {
-  const parentPath = '/home/Lisa'
+  const parentPath = '/home/Alex'
   const getFirstExistingParentPath = mockGetFirstExistingParentPath(parentPath)
   t.is(getFirstExistingParentPath(parentPath), parentPath)
 })

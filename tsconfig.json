@@ -10,5 +10,11 @@
     "paths": {
       "@/src/*": ["src/*"]
     }
-  }
+  },
+	"include": [
+		"*.ts",
+		"src/**/*.ts",
+		"tests/**/*.ts",
+		"**.js"
+	]
 }

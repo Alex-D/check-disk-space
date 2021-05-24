@@ -34,7 +34,7 @@ function checkDiskSpace(directoryPath: string, dependencies: Dependencies = {
 		stdout: string,
 		filter: (driveData: string[]) => boolean,
 		mapping: Record<string, number>,
-		coefficient: number = 1,
+		coefficient = 1,
 	): DiskSpace {
 		const parsed = stdout.trim().split('\n').slice(1).map(line => {
 			return line.trim().split(/\s+(?=[\d/])/)
@@ -155,7 +155,7 @@ export default checkDiskSpace
 export {
 	Dependencies,
 	DiskSpace,
+	getFirstExistingParentPath,
 	InvalidPathError,
 	NoMatchError,
-	getFirstExistingParentPath,
 }

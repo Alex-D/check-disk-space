@@ -3,3 +3,5 @@ types/
 temp/
 node_modules/
 .idea/
+
+.eslintcache
