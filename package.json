@@ -43,7 +43,7 @@
     "node": ">=12"
   },
   "devDependencies": {
-    "@alex-d/eslint-config": "1.0.2",
+    "@alex-d/eslint-config": "1.0.3",
     "@istanbuljs/nyc-config-typescript": "^1.0.1",
     "@rollup/plugin-typescript": "8.2.1",
     "@types/node": "15.12.2",

@@ -1,4 +1,4 @@
-import {ChildProcess, execFile, ExecFileException} from 'child_process'
+import {ChildProcess, ExecFileException} from 'child_process'
 import {existsSync} from 'fs'
 import {normalize, sep} from 'path'
 
