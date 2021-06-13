@@ -1,4 +1,4 @@
-import {execFile} from 'child_process'
+import {ChildProcess, execFile, ExecFileException} from 'child_process'
 import {existsSync} from 'fs'
 import {normalize, sep} from 'path'
 
@@ -10,7 +10,7 @@ type Dependencies = {
 	fsExistsSync: typeof existsSync
 	pathNormalize: typeof normalize
 	pathSep: typeof sep
-	cpExecFile: typeof execFile
+	cpExecFile: (file: string, args: ReadonlyArray<string> | undefined | null, callback: (error: ExecFileException | null, stdout: string, stderr: string) => void) => ChildProcess
 }
 
 export default Dependencies

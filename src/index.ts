@@ -34,7 +34,7 @@ function checkDiskSpace(directoryPath: string, dependencies: Dependencies = {
 		stdout: string,
 		filter: (driveData: string[]) => boolean,
 		mapping: Record<string, number>,
-		coefficient = 1,
+		coefficient: number,
 	): DiskSpace {
 		const parsed = stdout.trim().split('\n').slice(1).map(line => {
 			return line.trim().split(/\s+(?=[\d/])/)
@@ -71,6 +71,7 @@ function checkDiskSpace(directoryPath: string, dependencies: Dependencies = {
 	): Promise<DiskSpace> {
 		return new Promise((resolve, reject) => {
 			const [file, ...args] = cmd
+			/* istanbul ignore if */
 			if (file === undefined) {
 				return Promise.reject('cmd must contain at least one item')
 			}
