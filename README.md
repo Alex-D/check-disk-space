@@ -4,9 +4,21 @@
 [![check-disk-space on npm](https://img.shields.io/npm/v/check-disk-space?style=for-the-badge)](https://www.npmjs.com/package/check-disk-space)
 [![License MIT](https://img.shields.io/github/license/Alex-D/check-disk-space.svg?style=for-the-badge)](LICENSE)
 
+
+## Introduction
+
+Light multi-platform disk space checker without third party for Node.js.
+
+- Works on Linux, macOS and Windows
+- Take care of mounting points on unix-like systems
+- No dependencies
+- TypeScript support
+
+
 ## Install
 
 `npm install check-disk-space`
+
 
 ## Usage
 
@@ -25,6 +37,7 @@ checkDiskSpace('C:/blabla/bla').then((diskSpace) => {
     //     free: 12345678,
     //     size: 98756432
     // }
+    // Note: `free` and `size` are in bytes
 })
 
 // On Linux or macOS
@@ -35,5 +48,6 @@ checkDiskSpace('/mnt/mygames').then((diskSpace) => {
     //     free: 12345678,
     //     size: 98756432
     // }
+    // Note: `free` and `size` are in bytes
 })
 ```

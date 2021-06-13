@@ -1,5 +1,5 @@
 /**
- * @public
+ * `free` and `size` are in bytes
  */
 type DiskSpace = {
 	diskPath: string

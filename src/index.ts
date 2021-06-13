@@ -10,7 +10,6 @@ import DiskSpace from '@/src/types/diskSpace'
 
 /**
  * Check disk space
- * @public
  *
  * @param directoryPath - The file/folder path from where we want to know disk space
  * @param dependencies - Dependencies container
