@@ -1,16 +1,18 @@
 {
 	"$schema": "http://json.schemastore.org/tsconfig",
-  "compilerOptions": {
-    "strict": true,
+	"compilerOptions": {
+		"strict": true,
 		"noImplicitAny": true,
-    "module": "esnext",
-    "moduleResolution": "node",
-    "target": "es6",
-    "baseUrl": ".",
-    "paths": {
-      "@/src/*": ["src/*"]
-    }
-  },
+		"module": "esnext",
+		"moduleResolution": "node",
+		"target": "es6",
+		"baseUrl": ".",
+		"paths": {
+			"@/src/*": [
+				"src/*"
+			]
+		}
+	},
 	"include": [
 		"*.ts",
 		"src/**/*.ts",
