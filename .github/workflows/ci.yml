@@ -4,7 +4,7 @@ on:
   pull_request:
 jobs:
   unit-tests:
-    name: 'Unit tests and Coverage'
+    name: Unit tests and Coverage (Node ${{ matrix.node }})
     runs-on: ubuntu-latest
     strategy:
       matrix:
