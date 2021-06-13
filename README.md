@@ -1,8 +1,8 @@
 # Check disk space
 
-[![Travis](https://img.shields.io/travis/Alex-D/check-disk-space.svg)](https://travis-ci.org/Alex-D/check-disk-space)
-[![License MIT](https://img.shields.io/github/license/Alex-D/check-disk-space.svg)](LICENSE)
-[![XO code style](https://img.shields.io/badge/code_style-XO-5ed9c7.svg)](https://github.com/sindresorhus/xo)
+[![Continue Integration](https://img.shields.io/github/workflow/status/Alex-D/check-disk-space/Continuous%20Integration?style=for-the-badge)](https://github.com/Alex-D/check-disk-space/actions/workflows/ci.yml)
+[![check-disk-space on npm](https://img.shields.io/npm/v/check-disk-space?style=for-the-badge)](https://www.npmjs.com/package/check-disk-space)
+[![License MIT](https://img.shields.io/github/license/Alex-D/check-disk-space.svg?style=for-the-badge)](LICENSE)
 
 ## Install
 
