@@ -19,26 +19,26 @@
     "build:dts": "rollup --config rollup.dts.config.js",
     "build": "npm-run-all build:lib build:dts",
     "lint": "eslint . --cache",
-		"lint:fix": "eslint --fix .",
-		"typecheck": "tsc --noEmit",
-		"test": "npm-run-all test:coverage lint typecheck",
-		"test:unit": "NODE_ENV=test TS_NODE_PROJECT='tsconfig.test.json' ava",
-		"test:coverage": "nyc --reporter=lcov --reporter=text npm run test:unit --silent"
+    "lint:fix": "eslint --fix .",
+    "typecheck": "tsc --noEmit",
+    "test": "npm-run-all test:coverage lint typecheck",
+    "test:unit": "NODE_ENV=test TS_NODE_PROJECT='tsconfig.test.json' ava",
+    "test:coverage": "nyc --reporter=lcov --reporter=text npm run test:unit --silent"
   },
-	"ava": {
-		"files": [
-			"test/**",
-			"!test/__helpers__/**"
-		],
-		"extensions": [
-			"ts"
-		],
-		"require": [
-			"tsconfig-paths/register",
-			"ts-node/register",
-			"source-map-support/register"
-		]
-	},
+  "ava": {
+    "files": [
+      "test/**",
+      "!test/__helpers__/**"
+    ],
+    "extensions": [
+      "ts"
+    ],
+    "require": [
+      "tsconfig-paths/register",
+      "ts-node/register",
+      "source-map-support/register"
+    ]
+  },
   "engines": {
     "node": ">=12"
   },
@@ -61,6 +61,7 @@
     "source-map-support": "^0.5.19",
     "ts-node": "^10.0.0",
     "tsconfig-paths": "^3.9.0",
+    "tslib": "^2.3.0",
     "typescript": "4.3.2"
   },
   "repository": {
