@@ -1,6 +1,6 @@
 {
   "name": "check-disk-space",
-  "version": "3.0.1",
+  "version": "3.1.0",
   "description": "Light multi-platform disk space checker without third party for Node.js",
   "files": [
     "dist",
@@ -10,8 +10,8 @@
   "module": "./dist/check-disk-space.mjs",
   "types": "./dist/check-disk-space.d.ts",
   "exports": {
-		"import": "./dist/check-disk-space.mjs",
-		"require": "./dist/check-disk-space.cjs"
+    "import": "./dist/check-disk-space.mjs",
+    "require": "./dist/check-disk-space.cjs"
   },
   "scripts": {
     "build:lib": "rollup --config",
