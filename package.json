@@ -1,17 +1,19 @@
 {
-  "name": "check-disk-space",
-  "version": "3.1.0",
-  "description": "Light multi-platform disk space checker without third party for Node.js",
+  "name": "@lucasiohk/check-disk-space",
+  "version": "0.0.1",
+  "description": "Fork of Alex-D/check-disk-space",
   "files": [
     "dist",
     "README.md"
   ],
-  "main": "./dist/check-disk-space.cjs",
-  "module": "./dist/check-disk-space.mjs",
+  "main": "./dist/check-disk-space.cjs.js",
+  "module": "./dist/check-disk-space.es.js",
   "types": "./dist/check-disk-space.d.ts",
   "exports": {
-    "import": "./dist/check-disk-space.mjs",
-    "require": "./dist/check-disk-space.cjs"
+    ".": {
+      "import": "./dist/check-disk-space.es.js",
+      "require": "./dist/check-disk-space.cjs.js"
+    }
   },
   "scripts": {
     "build:lib": "rollup --config",
@@ -65,7 +67,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Alex-D/check-disk-space.git"
+    "url": "git+https://github.com/lucas-barros/check-disk-space.git"
   },
   "keywords": [
     "disk",
@@ -76,7 +78,7 @@
   "author": "Alex-D <contact@alex-d.fr> (https://alex-d.fr)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Alex-D/check-disk-space/issues"
+    "url": "https://github.com/lucas-barros/check-disk-space/issues"
   },
-  "homepage": "https://github.com/Alex-D/check-disk-space#readme"
+  "homepage": "https://github.com/lucas-barros/check-disk-space#readme"
 }

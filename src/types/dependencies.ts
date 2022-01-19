@@ -7,7 +7,17 @@ type Dependencies = {
 	fsExistsSync: typeof existsSync
 	pathNormalize: typeof normalize
 	pathSep: typeof sep
-	cpExecFile: (file: string, args: ReadonlyArray<string> | undefined | null, callback: (error: ExecFileException | null, stdout: string, stderr: string) => void) => ChildProcess
+	release: string
+	cpExecFile: (
+		file: string, 
+		args: ReadonlyArray<string> | undefined | null, 
+		options: { shell?: boolean },
+		callback: (
+			error: ExecFileException | null, 
+			stdout: string, 
+			stderr: string
+		) => void
+	) => ChildProcess
 }
 
 export default Dependencies

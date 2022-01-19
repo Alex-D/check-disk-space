@@ -1,12 +1,15 @@
 import {execFile} from 'child_process'
 import {existsSync} from 'fs'
 import {normalize, sep} from 'path'
+import {release} from 'os'
 
 import InvalidPathError from '@/src/errors/invalidPathError'
 import NoMatchError from '@/src/errors/noMatchError'
 import getFirstExistingParentPath from '@/src/functions/getFirstExistingParentPath'
+import getWindowsVersion, {WindowVersion} from '@/src/functions/getWindowsVersion'
 import Dependencies from '@/src/types/dependencies'
 import DiskSpace from '@/src/types/diskSpace'
+import Check from '@/src/types/check'
 
 /**
  * Check disk space
@@ -20,6 +23,7 @@ function checkDiskSpace(directoryPath: string, dependencies: Dependencies = {
 	pathNormalize: normalize,
 	pathSep: sep,
 	cpExecFile: execFile,
+	release: release(),
 }): Promise<DiskSpace> {
 	/**
 	 * Maps command output to a normalized object {diskPath, free, size}
@@ -62,12 +66,13 @@ function checkDiskSpace(directoryPath: string, dependencies: Dependencies = {
 	 * @param mapping - Map between column index and normalized column name
 	 * @param coefficient - The size coefficient to get bytes instead of kB
 	 */
-	function check(
-		cmd: string[],
-		filter: (driveData: string[]) => boolean,
-		mapping: Record<string, number>,
+	function check({
+		cmd,
+		filter,
+		mapping,
 		coefficient = 1,
-	): Promise<DiskSpace> {
+		options = {},
+	}: Check ): Promise<DiskSpace> {
 		return new Promise((resolve, reject) => {
 			const [file, ...args] = cmd
 			/* istanbul ignore if */
@@ -75,7 +80,7 @@ function checkDiskSpace(directoryPath: string, dependencies: Dependencies = {
 				return Promise.reject('cmd must contain at least one item')
 			}
 
-			dependencies.cpExecFile(file, args, (error, stdout) => {
+			dependencies.cpExecFile(file, args, options, (error, stdout) => {
 				if (error) {
 					reject(error)
 				}
@@ -100,20 +105,30 @@ function checkDiskSpace(directoryPath: string, dependencies: Dependencies = {
 				reject(new InvalidPathError(`The following path is invalid (should be X:\\...): ${directoryPath}`))
 			})
 		}
+		const windowsVersion = getWindowsVersion(dependencies.release)
+		const isWindows11 = windowsVersion === WindowVersion.Eleven
+		const options = isWindows11 ? {shell: true} : {}
+		const cmd = isWindows11 ? 
+			['powershell -Command \'Get-CimInstance -ClassName Win32_LogicalDisk | Select-Object Caption, FreeSpace, Size\''] :
+			['wmic', 'logicaldisk', 'get', 'size,freespace,caption']
 
-		return check(
-			['wmic', 'logicaldisk', 'get', 'size,freespace,caption'],
-			driveData => {
+
+		return check({
+			cmd,
+			options,
+			filter: (driveData) => {
 				// Only get the drive which match the path
-				const driveLetter = driveData[0]
-				return directoryPath.toUpperCase().startsWith(driveLetter.toUpperCase())
+				const driveLetter = driveData[0];
+				return directoryPath
+					.toUpperCase()
+					.startsWith(driveLetter.toUpperCase());
 			},
-			{
+			mapping: {
 				diskPath: 0,
 				free: 1,
 				size: 2,
 			},
-		)
+		});
 	}
 
 	/**
@@ -130,16 +145,16 @@ function checkDiskSpace(directoryPath: string, dependencies: Dependencies = {
 
 		const pathToCheck = getFirstExistingParentPath(directoryPath, dependencies)
 
-		return check(
-			['df', '-Pk', '--', pathToCheck],
-			() => true, // We should only get one line, so we did not need to filter
-			{
+		return check({
+			cmd: ['df', '-Pk', '--', pathToCheck],
+			filter: () => true, // We should only get one line, so we did not need to filter
+			mapping: {
 				diskPath: 5,
 				free: 3,
 				size: 1,
 			},
-			1024, // We get sizes in kB, we need to convert that to bytes
-		)
+			coefficient: 1024, // We get sizes in kB, we need to convert that to bytes
+		});
 	}
 
 

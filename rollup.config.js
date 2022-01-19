@@ -4,12 +4,12 @@ export default {
 	input: 'src/index.ts',
 	output: [
 		{
-			file: 'dist/check-disk-space.cjs',
+			file: 'dist/check-disk-space.cjs.js',
 			format: 'cjs',
 			exports: 'named',
 		},
 		{
-			file: 'dist/check-disk-space.mjs',
+			file: 'dist/check-disk-space.mjs.js',
 			format: 'es',
 		},
 	],

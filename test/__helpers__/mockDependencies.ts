@@ -13,7 +13,8 @@ function mockDependencies(overrides?: Partial<Dependencies>, options?: {
 		fsExistsSync: () => true,
 		pathNormalize: normalize,
 		pathSep: '/',
-		cpExecFile: (cmd, args, callback) => {
+		release: '',
+		cpExecFile: (cmd, args, opt, callback) => {
 			process.nextTick(() => {
 				if (options?.cpExecFileError !== undefined) {
 					callback(options.cpExecFileError, '', '')
