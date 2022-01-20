@@ -109,7 +109,7 @@ function checkDiskSpace(directoryPath: string, dependencies: Dependencies = {
 		const isWindows11 = windowsVersion === WindowVersion.Eleven
 		const options = isWindows11 ? {shell: true} : {}
 		const cmd = isWindows11 ? 
-			['powershell -Command \'Get-CimInstance -ClassName Win32_LogicalDisk | Select-Object Caption, FreeSpace, Size\''] :
+			[`powershell -Command "Get-CimInstance -ClassName Win32_LogicalDisk | Select-Object Caption, FreeSpace, Size"`] :
 			['wmic', 'logicaldisk', 'get', 'size,freespace,caption']
 
 
