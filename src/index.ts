@@ -102,7 +102,7 @@ function checkDiskSpace(directoryPath: string, dependencies: Dependencies = {
 		}
 
 		return check(
-			['wmic', 'logicaldisk', 'get', 'size,freespace,caption'],
+			['powershell', 'Get-CimInstance -ClassName Win32_LogicalDisk | Select-Object Caption, FreeSpace, Size'],
 			driveData => {
 				// Only get the drive which match the path
 				const driveLetter = driveData[0]
