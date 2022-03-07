@@ -4,6 +4,7 @@ import {normalize, sep} from 'path'
 
 type Dependencies = {
 	platform: NodeJS.Platform
+	release: string
 	fsExistsSync: typeof existsSync
 	pathNormalize: typeof normalize
 	pathSep: typeof sep

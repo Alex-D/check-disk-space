@@ -17,8 +17,9 @@ export default {
 		rollupTypeScript(),
 	],
 	external: [
-		'fs',
-		'path',
 		'child_process',
+		'fs',
+		'os',
+		'path',
 	],
 }

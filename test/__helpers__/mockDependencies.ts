@@ -10,6 +10,7 @@ function mockDependencies(overrides?: Partial<Dependencies>, options?: {
 }): Dependencies {
 	const dependencies: Dependencies = {
 		platform: 'linux',
+		release: '11.5.0',
 		fsExistsSync: () => true,
 		pathNormalize: normalize,
 		pathSep: '/',

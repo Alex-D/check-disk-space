@@ -1,10 +1,12 @@
 import {execFile} from 'child_process'
 import {existsSync} from 'fs'
+import {release} from 'os'
 import {normalize, sep} from 'path'
 
 import InvalidPathError from '@/src/errors/invalidPathError'
 import NoMatchError from '@/src/errors/noMatchError'
 import getFirstExistingParentPath from '@/src/functions/getFirstExistingParentPath'
+import hasPowerShell3 from '@/src/functions/hasPowerShell3'
 import Dependencies from '@/src/types/dependencies'
 import DiskSpace from '@/src/types/diskSpace'
 
@@ -16,6 +18,7 @@ import DiskSpace from '@/src/types/diskSpace'
  */
 function checkDiskSpace(directoryPath: string, dependencies: Dependencies = {
 	platform: process.platform,
+	release: release(),
 	fsExistsSync: existsSync,
 	pathNormalize: normalize,
 	pathSep: sep,
@@ -101,8 +104,12 @@ function checkDiskSpace(directoryPath: string, dependencies: Dependencies = {
 			})
 		}
 
+		const powershellCmd = ['powershell', 'Get-CimInstance -ClassName Win32_LogicalDisk | Select-Object Caption, FreeSpace, Size']
+		const wmicCmd = ['wmic', 'logicaldisk', 'get', 'size,freespace,caption']
+		const cmd = hasPowerShell3(dependencies.release) ? powershellCmd : wmicCmd
+
 		return check(
-			['powershell', 'Get-CimInstance -ClassName Win32_LogicalDisk | Select-Object Caption, FreeSpace, Size'],
+			cmd,
 			driveData => {
 				// Only get the drive which match the path
 				const driveLetter = driveData[0]

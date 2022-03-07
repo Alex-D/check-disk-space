@@ -9,6 +9,7 @@ const platformFixtures = {
 	win32: [
 		{
 			title: 'Windows XP',
+			release: '4.0.42',
 			path: 'D:/a/long/path',
 			execOutput: `
           Caption  FreeSpace     Size
@@ -25,6 +26,7 @@ const platformFixtures = {
 		},
 		{
 			title: 'Windows 7',
+			release: '6.42.24',
 			path: 'C:/blah',
 			execOutput: `
           Caption  FreeSpace  Size
@@ -43,6 +45,7 @@ const platformFixtures = {
 		},
 		{
 			title: 'Windows 8',
+			release: '8.12.4',
 			path: 'D:/MyGames',
 			execOutput: `
           Caption  FreeSpace     Size
@@ -57,6 +60,7 @@ const platformFixtures = {
 		},
 		{
 			title: 'Windows 10',
+			release: '10.42.0',
 			path: 'C:/User/toto',
 			execOutput: `
           Caption  FreeSpace     Size
@@ -73,6 +77,7 @@ const platformFixtures = {
 	linux: [
 		{
 			title: 'bananian',
+			release: '5.1.0',
 			path: '/dev',
 			execOutput: `
           Filesystem     1K-blocks    Used Available Use% Mounted on
@@ -86,6 +91,7 @@ const platformFixtures = {
 		},
 		{
 			title: 'Ubuntu',
+			release: '5.1.0',
 			path: '/run/user/1000',
 			execOutput: `
           Filesystem     1024-blocks    Used Available Capacity Mounted on
@@ -99,6 +105,7 @@ const platformFixtures = {
 		},
 		{
 			title: 'Ubuntu: russian locale',
+			release: '5.1.0',
 			path: '/media/Games',
 			execOutput: `
           Файл.система   1024-блоков Использовано Доступно Вместимость Cмонтировано в
@@ -114,6 +121,7 @@ const platformFixtures = {
 	darwin: [
 		{
 			title: 'macOS',
+			release: '5.1.0',
 			path: '/home/jacquie',
 			execOutput: `
           Filesystem    1024-blocks     Used Available Capacity  Mounted on
@@ -135,6 +143,7 @@ platforms.forEach(platform => {
 		test(`${platform}: ${fixture.title}`, async t => {
 			const dependencies = mockDependencies({
 				platform,
+				release: fixture.release,
 			}, {
 				cpExecFileOutput: fixture.execOutput,
 			})
