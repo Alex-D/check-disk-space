@@ -160,7 +160,7 @@ test('win32: path did not match any disk', async t => {
 	})
 
 	const error = await t.throwsAsync(checkDiskSpace('Z:/shouldfail', dependencies))
-	t.is(error.name, 'NoMatchError')
+	t.is(error?.name, 'NoMatchError')
 })
 
 test('win32: invalid path', async t => {
@@ -171,7 +171,7 @@ test('win32: invalid path', async t => {
 	})
 
 	const error = await t.throwsAsync(checkDiskSpace('an invalid path', dependencies))
-	t.is(error.name, 'InvalidPathError')
+	t.is(error?.name, 'InvalidPathError')
 })
 
 test('unix: invalid path', async t => {
@@ -182,7 +182,7 @@ test('unix: invalid path', async t => {
 	})
 
 	const error = await t.throwsAsync(checkDiskSpace('an invalid path', dependencies))
-	t.is(error.name, 'InvalidPathError')
+	t.is(error?.name, 'InvalidPathError')
 })
 
 test('exec has an error', async t => {
@@ -193,7 +193,7 @@ test('exec has an error', async t => {
 	})
 
 	const error = await t.throwsAsync(checkDiskSpace('C:/something', dependencies))
-	t.is(error.message, 'some error')
+	t.is(error?.message, 'some error')
 })
 
 test('run without dependencies mock', async t => {

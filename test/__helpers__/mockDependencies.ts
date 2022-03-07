@@ -1,6 +1,6 @@
-import {ChildProcess} from 'child_process'
-import {EventEmitter} from 'events'
-import {normalize} from 'path'
+import { ChildProcess } from 'child_process'
+import { EventEmitter } from 'events'
+import { normalize } from 'path'
 
 import Dependencies from '@/src/types/dependencies'
 

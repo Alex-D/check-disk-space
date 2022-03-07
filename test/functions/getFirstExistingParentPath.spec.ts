@@ -1,5 +1,5 @@
 import test from 'ava'
-import {PathLike} from 'fs'
+import { PathLike } from 'fs'
 
 import getFirstExistingParentPath from '@/src/functions/getFirstExistingParentPath'
 import mockDependencies from '@/test/__helpers__/mockDependencies'

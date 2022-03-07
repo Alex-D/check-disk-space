@@ -1,6 +1,8 @@
-import {ChildProcess, ExecFileException} from 'child_process'
-import {existsSync} from 'fs'
-import {normalize, sep} from 'path'
+import { ChildProcess, ExecException } from 'child_process'
+import { existsSync } from 'fs'
+import { normalize, sep } from 'path'
+
+type ExecFileException = ExecException & NodeJS.ErrnoException
 
 type Dependencies = {
 	platform: NodeJS.Platform

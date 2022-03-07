@@ -1,7 +1,7 @@
-import {execFile} from 'child_process'
-import {existsSync} from 'fs'
-import {release} from 'os'
-import {normalize, sep} from 'path'
+import { execFile } from 'child_process'
+import { existsSync } from 'fs'
+import { release } from 'os'
+import { normalize, sep } from 'path'
 
 import InvalidPathError from '@/src/errors/invalidPathError'
 import NoMatchError from '@/src/errors/noMatchError'
@@ -24,6 +24,9 @@ function checkDiskSpace(directoryPath: string, dependencies: Dependencies = {
 	pathSep: sep,
 	cpExecFile: execFile,
 }): Promise<DiskSpace> {
+	// Note: This function contains other functions in order
+	//       to wrap them in a common context and make unit tests easier
+
 	/**
 	 * Maps command output to a normalized object {diskPath, free, size}
 	 *
@@ -72,10 +75,14 @@ function checkDiskSpace(directoryPath: string, dependencies: Dependencies = {
 		coefficient = 1,
 	): Promise<DiskSpace> {
 		return new Promise((resolve, reject) => {
-			const [file, ...args] = cmd
+			const [
+				file,
+				...args
+			] = cmd
+
 			/* istanbul ignore if */
 			if (file === undefined) {
-				return Promise.reject('cmd must contain at least one item')
+				return Promise.reject(new Error('cmd must contain at least one item'))
 			}
 
 			dependencies.cpExecFile(file, args, (error, stdout) => {
@@ -104,8 +111,16 @@ function checkDiskSpace(directoryPath: string, dependencies: Dependencies = {
 			})
 		}
 
-		const powershellCmd = ['powershell', 'Get-CimInstance -ClassName Win32_LogicalDisk | Select-Object Caption, FreeSpace, Size']
-		const wmicCmd = ['wmic', 'logicaldisk', 'get', 'size,freespace,caption']
+		const powershellCmd = [
+			'powershell',
+			'Get-CimInstance -ClassName Win32_LogicalDisk | Select-Object Caption, FreeSpace, Size',
+		]
+		const wmicCmd = [
+			'wmic',
+			'logicaldisk',
+			'get',
+			'size,freespace,caption',
+		]
 		const cmd = hasPowerShell3(dependencies.release) ? powershellCmd : wmicCmd
 
 		return check(
@@ -138,7 +153,12 @@ function checkDiskSpace(directoryPath: string, dependencies: Dependencies = {
 		const pathToCheck = getFirstExistingParentPath(directoryPath, dependencies)
 
 		return check(
-			['df', '-Pk', '--', pathToCheck],
+			[
+				'df',
+				'-Pk',
+				'--',
+				pathToCheck,
+			],
 			() => true, // We should only get one line, so we did not need to filter
 			{
 				diskPath: 5,
