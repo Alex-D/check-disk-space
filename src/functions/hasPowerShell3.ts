@@ -1,3 +1,5 @@
+import Dependencies from '@/src/types/dependencies'
+
 /**
  * Tell if PowerShell 3 is available based on Windows version
  *
@@ -6,10 +8,20 @@
  *
  * @param release - OS Release number
  */
-function hasPowerShell3(release: string): boolean {
-	const major = parseInt(release.split('.')[0], 10)
+function hasPowerShell3(dependencies: Dependencies): boolean {
+	const major = parseInt(dependencies.release.split('.')[0], 10)
 
-	return major > 6
+	if (major > 6)
+	{
+		try {
+			dependencies.cpExecFileSync('powershell')
+			return true
+		} catch (err) {
+			return false
+		}
+	} else {
+		return false
+	}
 }
 
 export default hasPowerShell3
