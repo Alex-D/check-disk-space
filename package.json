@@ -1,6 +1,6 @@
 {
   "name": "check-disk-space",
-  "version": "3.3.0",
+  "version": "3.3.1",
   "description": "Light multi-platform disk space checker without third party for Node.js",
   "files": [
     "dist",
