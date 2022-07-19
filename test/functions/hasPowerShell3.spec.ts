@@ -9,11 +9,15 @@ test('windows: release <=6 must NOT have PowerShell 3', t => {
 		platform: 'win32',
 	})
 
-	dependencies.release = '5.0.12'
-	t.is(hasPowerShell3(dependencies), false)
+	t.is(hasPowerShell3({
+		...dependencies,
+		release: '5.0.12',
+	}), false)
 
-	dependencies.release = '6.1.0'
-	t.is(hasPowerShell3(dependencies), false)
+	t.is(hasPowerShell3({
+		...dependencies,
+		release: '6.1.0',
+	}), false)
 })
 
 test('windows: release 7+ must have PowerShell 3', t => {
@@ -21,14 +25,20 @@ test('windows: release 7+ must have PowerShell 3', t => {
 		platform: 'win32',
 	})
 
-	dependencies.release = '7.3.15'
-	t.is(hasPowerShell3(dependencies), true)
+	t.is(hasPowerShell3({
+		...dependencies,
+		release: '7.3.15',
+	}), true)
 
-	dependencies.release = '10.3.15'
-	t.is(hasPowerShell3(dependencies), true)
+	t.is(hasPowerShell3({
+		...dependencies,
+		release: '10.3.15',
+	}), true)
 
-	dependencies.release = '11.14.0'
-	t.is(hasPowerShell3(dependencies), true)
+	t.is(hasPowerShell3({
+		...dependencies,
+		release: '11.14.0',
+	}), true)
 })
 
 test('windows: release 7+ powershell ENOENT', t => {
