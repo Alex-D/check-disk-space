@@ -1,4 +1,4 @@
-import { execFile } from 'child_process'
+import { execFile, execFileSync } from 'child_process'
 import { existsSync } from 'fs'
 import { release } from 'os'
 import { normalize, sep } from 'path'
@@ -23,6 +23,7 @@ function checkDiskSpace(directoryPath: string, dependencies: Dependencies = {
 	pathNormalize: normalize,
 	pathSep: sep,
 	cpExecFile: execFile,
+	cpExecFileSync: execFileSync,
 }): Promise<DiskSpace> {
 	// Note: This function contains other functions in order
 	//       to wrap them in a common context and make unit tests easier
@@ -121,7 +122,7 @@ function checkDiskSpace(directoryPath: string, dependencies: Dependencies = {
 			'get',
 			'size,freespace,caption',
 		]
-		const cmd = hasPowerShell3(dependencies.release) ? powershellCmd : wmicCmd
+		const cmd = hasPowerShell3(dependencies) ? powershellCmd : wmicCmd
 
 		return check(
 			cmd,
