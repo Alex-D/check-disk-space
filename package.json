@@ -11,7 +11,8 @@
   "types": "./dist/check-disk-space.d.ts",
   "exports": {
     "import": "./dist/check-disk-space.mjs",
-    "require": "./dist/check-disk-space.cjs"
+    "require": "./dist/check-disk-space.cjs",
+    "types": "./dist/check-disk-space.d.ts"
   },
   "scripts": {
     "build:lib": "rollup --config",
