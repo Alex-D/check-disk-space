@@ -2,6 +2,7 @@ import { execFile, execFileSync } from 'child_process'
 import { existsSync } from 'fs'
 import { release } from 'os'
 import { normalize, sep } from 'path'
+import process from 'process'
 
 import InvalidPathError from '@/src/errors/invalidPathError'
 import NoMatchError from '@/src/errors/noMatchError'
