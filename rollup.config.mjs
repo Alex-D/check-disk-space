@@ -21,5 +21,6 @@ export default {
 		'fs',
 		'os',
 		'path',
+		'process',
 	],
 }
