@@ -40,13 +40,13 @@
     ]
   },
   "engines": {
-    "node": ">=12"
+    "node": ">=16"
   },
   "devDependencies": {
     "@alex-d/eslint-config": "2.2.0",
     "@istanbuljs/nyc-config-typescript": "1.0.2",
     "@rollup/plugin-typescript": "11.1.1",
-    "@types/node": "12.20.55",
+    "@types/node": "16.11.7",
     "@typescript-eslint/eslint-plugin": "5.59.6",
     "@typescript-eslint/parser": "5.59.6",
     "ava": "5.2.0",
