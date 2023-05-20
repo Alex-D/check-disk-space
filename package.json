@@ -15,7 +15,7 @@
   },
   "scripts": {
     "build:lib": "rollup --config",
-    "build:dts": "rollup --config rollup.dts.config.js",
+    "build:dts": "rollup --config rollup.dts.config.mjs",
     "build": "npm-run-all build:lib build:dts",
     "lint": "eslint . --cache",
     "lint:fix": "eslint --fix .",

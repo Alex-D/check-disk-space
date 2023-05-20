@@ -1,6 +1,6 @@
 import dts from 'rollup-plugin-dts'
 
-import config from './rollup.config'
+import config from './rollup.config.mjs'
 
 config.output = [
 	{
