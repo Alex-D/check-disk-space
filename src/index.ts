@@ -1,4 +1,4 @@
-import { execFile, execFileSync } from 'child_process'
+import { execFile } from 'child_process'
 import { existsSync } from 'fs'
 import { release } from 'os'
 import { normalize, sep } from 'path'
@@ -18,13 +18,12 @@ import DiskSpace from '@/src/types/diskSpace'
  * @param dependencies - Dependencies container
  */
 function checkDiskSpace(directoryPath: string, dependencies: Dependencies = {
-	platform: platform,
+	platform,
 	release: release(),
 	fsExistsSync: existsSync,
 	pathNormalize: normalize,
 	pathSep: sep,
 	cpExecFile: execFile,
-	cpExecFileSync: execFileSync,
 }): Promise<DiskSpace> {
 	// Note: This function contains other functions in order
 	//       to wrap them in a common context and make unit tests easier
@@ -87,7 +86,7 @@ function checkDiskSpace(directoryPath: string, dependencies: Dependencies = {
 				return Promise.reject(new Error('cmd must contain at least one item'))
 			}
 
-			dependencies.cpExecFile(file, args, (error, stdout) => {
+			dependencies.cpExecFile(file, args, { windowsHide: true }, (error, stdout) => {
 				if (error) {
 					reject(error)
 				}
@@ -106,11 +105,9 @@ function checkDiskSpace(directoryPath: string, dependencies: Dependencies = {
 	 *
 	 * @param directoryPath - The file/folder path from where we want to know disk space
 	 */
-	function checkWin32(directoryPath: string): Promise<DiskSpace> {
+	async function checkWin32(directoryPath: string): Promise<DiskSpace> {
 		if (directoryPath.charAt(1) !== ':') {
-			return new Promise((resolve, reject) => {
-				reject(new InvalidPathError(`The following path is invalid (should be X:\\...): ${directoryPath}`))
-			})
+			return Promise.reject(new InvalidPathError(`The following path is invalid (should be X:\\...): ${directoryPath}`))
 		}
 
 		const powershellCmd = [
@@ -123,7 +120,7 @@ function checkDiskSpace(directoryPath: string, dependencies: Dependencies = {
 			'get',
 			'size,freespace,caption',
 		]
-		const cmd = hasPowerShell3(dependencies) ? powershellCmd : wmicCmd
+		const cmd = await hasPowerShell3(dependencies) ? powershellCmd : wmicCmd
 
 		return check(
 			cmd,
@@ -147,9 +144,7 @@ function checkDiskSpace(directoryPath: string, dependencies: Dependencies = {
 	 */
 	function checkUnix(directoryPath: string): Promise<DiskSpace> {
 		if (!dependencies.pathNormalize(directoryPath).startsWith(dependencies.pathSep)) {
-			return new Promise((resolve, reject) => {
-				reject(new InvalidPathError(`The following path is invalid (should start by ${dependencies.pathSep}): ${directoryPath}`))
-			})
+			return Promise.reject(new InvalidPathError(`The following path is invalid (should start by ${dependencies.pathSep}): ${directoryPath}`))
 		}
 
 		const pathToCheck = getFirstExistingParentPath(directoryPath, dependencies)

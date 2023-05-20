@@ -7,7 +7,6 @@ import Dependencies from '@/src/types/dependencies'
 function mockDependencies(overrides?: Partial<Dependencies>, options?: {
 	cpExecFileOutput?: string
 	cpExecFileError?: Error
-	cpExecFileSyncError?: Error
 }): Dependencies {
 	const dependencies: Dependencies = {
 		platform: 'linux',
@@ -15,7 +14,7 @@ function mockDependencies(overrides?: Partial<Dependencies>, options?: {
 		fsExistsSync: () => true,
 		pathNormalize: normalize,
 		pathSep: '/',
-		cpExecFile: (cmd, args, callback) => {
+		cpExecFile: (cmd, args, opts, callback) => {
 			process.nextTick(() => {
 				if (options?.cpExecFileError !== undefined) {
 					callback(options.cpExecFileError, '', '')
@@ -25,13 +24,6 @@ function mockDependencies(overrides?: Partial<Dependencies>, options?: {
 			})
 
 			return new EventEmitter() as ChildProcess
-		},
-		cpExecFileSync: () => {
-			if (options?.cpExecFileSyncError !== undefined) {
-				throw options.cpExecFileSyncError
-			}
-
-			return Buffer.from('')
 		},
 		...overrides,
 	}

@@ -6,22 +6,20 @@ import Dependencies from '@/src/types/dependencies'
  * Note: 6.* is Windows 7
  * Note: PowerShell 3 is natively available since Windows 8
  *
- * @param release - OS Release number
+ * @param dependencies - Dependencies Injection Container
  */
-function hasPowerShell3(dependencies: Dependencies): boolean {
+function hasPowerShell3(dependencies: Dependencies): Promise<boolean> {
 	const major = parseInt(dependencies.release.split('.')[0], 10)
 
-	if (major > 6)
-	{
-		try {
-			dependencies.cpExecFileSync('powershell')
-			return true
-		} catch (err) {
-			return false
-		}
-	} else {
-		return false
+	if (major <= 6) {
+		return Promise.resolve(false)
 	}
+
+	return new Promise<boolean>(function (resolve) {
+		dependencies.cpExecFile('where', ['powershell'], { windowsHide: true }, function (error) {
+			resolve(!error)
+		})
+	})
 }
 
 export default hasPowerShell3
