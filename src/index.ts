@@ -2,6 +2,7 @@ import { execFile, execFileSync } from 'child_process'
 import { existsSync } from 'fs'
 import { release } from 'os'
 import { normalize, sep } from 'path'
+import { platform } from 'process'
 
 import InvalidPathError from '@/src/errors/invalidPathError'
 import NoMatchError from '@/src/errors/noMatchError'
@@ -17,7 +18,7 @@ import DiskSpace from '@/src/types/diskSpace'
  * @param dependencies - Dependencies container
  */
 function checkDiskSpace(directoryPath: string, dependencies: Dependencies = {
-	platform: process.platform,
+	platform: platform,
 	release: release(),
 	fsExistsSync: existsSync,
 	pathNormalize: normalize,
