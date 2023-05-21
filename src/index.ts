@@ -1,8 +1,9 @@
-import { execFile } from 'child_process'
-import { existsSync } from 'fs'
-import { release } from 'os'
-import { normalize, sep } from 'path'
-import { platform } from 'process'
+import { execFile } from 'node:child_process'
+import { access } from 'node:fs/promises'
+import { release } from 'node:os'
+import { normalize, sep } from 'node:path'
+import { platform } from 'node:process'
+import { promisify } from 'node:util'
 
 import InvalidPathError from '@/src/errors/invalidPathError'
 import NoMatchError from '@/src/errors/noMatchError'
@@ -20,10 +21,10 @@ import DiskSpace from '@/src/types/diskSpace'
 function checkDiskSpace(directoryPath: string, dependencies: Dependencies = {
 	platform,
 	release: release(),
-	fsExistsSync: existsSync,
+	fsAccess: access,
 	pathNormalize: normalize,
 	pathSep: sep,
-	cpExecFile: execFile,
+	cpExecFile: promisify(execFile),
 }): Promise<DiskSpace> {
 	// Note: This function contains other functions in order
 	//       to wrap them in a common context and make unit tests easier
@@ -69,35 +70,28 @@ function checkDiskSpace(directoryPath: string, dependencies: Dependencies = {
 	 * @param mapping - Map between column index and normalized column name
 	 * @param coefficient - The size coefficient to get bytes instead of kB
 	 */
-	function check(
+	async function check(
 		cmd: string[],
 		filter: (driveData: string[]) => boolean,
 		mapping: Record<string, number>,
 		coefficient = 1,
 	): Promise<DiskSpace> {
-		return new Promise((resolve, reject) => {
-			const [
-				file,
-				...args
-			] = cmd
+		const [
+			file,
+			...args
+		] = cmd
 
-			/* istanbul ignore if */
-			if (file === undefined) {
-				return Promise.reject(new Error('cmd must contain at least one item'))
-			}
+		/* istanbul ignore if */
+		if (file === undefined) {
+			return Promise.reject(new Error('cmd must contain at least one item'))
+		}
 
-			dependencies.cpExecFile(file, args, { windowsHide: true }, (error, stdout) => {
-				if (error) {
-					reject(error)
-				}
-
-				try {
-					resolve(mapOutput(stdout, filter, mapping, coefficient))
-				} catch (error2) {
-					reject(error2)
-				}
-			})
-		})
+		try {
+			const { stdout } = await dependencies.cpExecFile(file, args, { windowsHide: true })
+			return mapOutput(stdout, filter, mapping, coefficient)
+		} catch (error) {
+			return Promise.reject(error)
+		}
 	}
 
 	/**
@@ -142,12 +136,12 @@ function checkDiskSpace(directoryPath: string, dependencies: Dependencies = {
 	 *
 	 * @param directoryPath - The file/folder path from where we want to know disk space
 	 */
-	function checkUnix(directoryPath: string): Promise<DiskSpace> {
+	async function checkUnix(directoryPath: string): Promise<DiskSpace> {
 		if (!dependencies.pathNormalize(directoryPath).startsWith(dependencies.pathSep)) {
 			return Promise.reject(new InvalidPathError(`The following path is invalid (should start by ${dependencies.pathSep}): ${directoryPath}`))
 		}
 
-		const pathToCheck = getFirstExistingParentPath(directoryPath, dependencies)
+		const pathToCheck = await getFirstExistingParentPath(directoryPath, dependencies)
 
 		return check(
 			[

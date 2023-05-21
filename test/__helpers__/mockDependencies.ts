@@ -1,6 +1,5 @@
-import { ChildProcess } from 'child_process'
-import { EventEmitter } from 'events'
-import { normalize } from 'path'
+import { normalize } from 'node:path'
+import { promisify } from 'node:util'
 
 import Dependencies from '@/src/types/dependencies'
 
@@ -11,19 +10,20 @@ function mockDependencies(overrides?: Partial<Dependencies>, options?: {
 	const dependencies: Dependencies = {
 		platform: 'linux',
 		release: '11.5.0',
-		fsExistsSync: () => true,
+		fsAccess: () => Promise.resolve(),
 		pathNormalize: normalize,
 		pathSep: '/',
-		cpExecFile: (cmd, args, opts, callback) => {
-			process.nextTick(() => {
-				if (options?.cpExecFileError !== undefined) {
-					callback(options.cpExecFileError, '', '')
-				}
+		cpExecFile: async () => {
+			await promisify(process.nextTick)
 
-				callback(null, options?.cpExecFileOutput ?? '', '')
-			})
+			if (options?.cpExecFileError !== undefined) {
+				return Promise.reject(options.cpExecFileError)
+			}
 
-			return new EventEmitter() as ChildProcess
+			return {
+				stdout: options?.cpExecFileOutput ?? '',
+				stderr: '',
+			}
 		},
 		...overrides,
 	}

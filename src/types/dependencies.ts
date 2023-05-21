@@ -1,13 +1,10 @@
-import { ChildProcess, ExecException } from 'child_process'
-import { existsSync } from 'fs'
-import { normalize, sep } from 'path'
-
-type ExecFileException = ExecException & NodeJS.ErrnoException
+import { access } from 'node:fs/promises'
+import { normalize, sep } from 'node:path'
 
 type Dependencies = {
 	platform: NodeJS.Platform
 	release: string
-	fsExistsSync: typeof existsSync
+	fsAccess: typeof access
 	pathNormalize: typeof normalize
 	pathSep: typeof sep
 	cpExecFile: (
@@ -15,13 +12,11 @@ type Dependencies = {
 		args: ReadonlyArray<string> | undefined | null,
 		options: {
 			windowsHide: true
-		},
-		callback: (
-			error: ExecFileException | null,
-			stdout: string,
-			stderr: string
-		) => void
-	) => ChildProcess
+		}
+	) => Promise<{
+		stdout: string
+		stderr: string
+	}>
 }
 
 export default Dependencies
