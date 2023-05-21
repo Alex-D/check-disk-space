@@ -73,6 +73,25 @@ const platformFixtures = {
 				size: 171204145152,
 			},
 		},
+		{
+			title: 'Windows 11: With strange Powershell settings #23',
+			release: '11.12.0',
+			path: 'C:/User/toto',
+			execOutput: `
+
+          Caption  FreeSpace     Size
+
+          C:       159345410048  171204145152
+
+          D:       0             4001759232
+
+      `,
+			result: {
+				diskPath: 'C:',
+				free: 159345410048,
+				size: 171204145152,
+			},
+		},
 	],
 	linux: [
 		{

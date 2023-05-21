@@ -43,9 +43,12 @@ function checkDiskSpace(directoryPath: string, dependencies: Dependencies = {
 		mapping: Record<string, number>,
 		coefficient: number,
 	): DiskSpace {
-		const parsed = stdout.trim().split('\n').slice(1).map(line => {
-			return line.trim().split(/\s+(?=[\d/])/)
-		})
+		const parsed = stdout
+			.split('\n') // Split lines
+			.map(line => line.trim()) // Trim all lines
+			.filter(line => line.length !== 0) // Remove empty lines
+			.slice(1) // Remove header
+			.map(line => line.split(/\s+(?=[\d/])/)) // Split on spaces to get columns
 
 		const filtered = parsed.filter(filter)
 
