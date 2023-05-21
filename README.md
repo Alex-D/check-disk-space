@@ -1,6 +1,6 @@
 # Check disk space
 
-[![Continue Integration](https://img.shields.io/github/workflow/status/Alex-D/check-disk-space/Continuous%20Integration?style=for-the-badge)](https://github.com/Alex-D/check-disk-space/actions/workflows/ci.yml)
+[![Continue Integration](https://img.shields.io/github/actions/workflow/status/Alex-D/check-disk-space/ci.yml?style=for-the-badge)](https://github.com/Alex-D/check-disk-space/actions/workflows/ci.yml)
 [![check-disk-space on npm](https://img.shields.io/npm/v/check-disk-space?style=for-the-badge)](https://www.npmjs.com/package/check-disk-space)
 [![License MIT](https://img.shields.io/github/license/Alex-D/check-disk-space.svg?style=for-the-badge)](LICENSE)
 
