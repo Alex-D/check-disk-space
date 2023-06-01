@@ -10,9 +10,9 @@
   "module": "./dist/check-disk-space.mjs",
   "types": "./dist/check-disk-space.d.ts",
   "exports": {
+    "types": "./dist/check-disk-space.d.ts",
     "import": "./dist/check-disk-space.mjs",
-    "require": "./dist/check-disk-space.cjs",
-    "types": "./dist/check-disk-space.d.ts"
+    "require": "./dist/check-disk-space.cjs"
   },
   "scripts": {
     "build:lib": "rollup --config",
