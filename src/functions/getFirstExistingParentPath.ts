@@ -11,16 +11,28 @@ async function getFirstExistingParentPath(directoryPath: string, dependencies: D
 	let parentDirectoryPath = dependencies.pathNormalize(directoryPath)
 	let parentDirectoryFound = await isDirectoryExisting(parentDirectoryPath, dependencies)
 
-	for (let i = 0; i < 4096 && !parentDirectoryFound; ++i) {
+	const FAILED_TO_FIND_EXISTING_DIRECTORY_VALUE = ''
+
+	/**
+	 * Linux max file path length is 4096 characters.
+	 * With / separators and 1 letter folder names, this gives us a max of ~2048 folders to traverse.
+	 * This is much less error prone than a while loop.
+	 */
+	const maxNumberOfFolders = 2048
+	for (let i = 0; i < maxNumberOfFolders && !parentDirectoryFound; ++i) {
 		const newParentDirectoryPath = dependencies.pathNormalize(parentDirectoryPath + '/..')
 		if (parentDirectoryPath === newParentDirectoryPath) {
-			return ''
+			return FAILED_TO_FIND_EXISTING_DIRECTORY_VALUE
 		}
 		parentDirectoryPath = newParentDirectoryPath
 		parentDirectoryFound = await isDirectoryExisting(parentDirectoryPath, dependencies)
 	}
 
-	return parentDirectoryPath !== '.' ? parentDirectoryPath : ''
+	if (parentDirectoryPath !== '.') {
+		return parentDirectoryPath
+	}
+
+	return FAILED_TO_FIND_EXISTING_DIRECTORY_VALUE
 }
 
 export default getFirstExistingParentPath
