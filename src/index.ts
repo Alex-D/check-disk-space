@@ -140,6 +140,7 @@ function checkDiskSpace(directoryPath: string, dependencies: Dependencies = {
 	 * @param directoryPath - The file/folder path from where we want to know disk space
 	 */
 	async function checkUnix(directoryPath: string): Promise<DiskSpace> {
+		console.log('path ', dependencies.pathNormalize(directoryPath), ' sep ', dependencies.pathSep)
 		if (!dependencies.pathNormalize(directoryPath).startsWith(dependencies.pathSep)) {
 			return Promise.reject(new InvalidPathError(`The following path is invalid (should start by ${dependencies.pathSep}): ${directoryPath}`))
 		}
