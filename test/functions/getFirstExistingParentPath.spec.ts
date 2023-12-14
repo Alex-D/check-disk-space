@@ -6,7 +6,7 @@ import { PathLike } from 'fs'
 import getFirstExistingParentPath from '@/src/functions/getFirstExistingParentPath'
 import mockDependencies from '@/test/__helpers__/mockDependencies'
 
-const getDependencies = (parentPath: string) => mockDependencies({
+const getMockedDependencies = (parentPath: string) => mockDependencies({
 	fsAccess: async (directoryPath: PathLike) => directoryPath === parentPath ? Promise.resolve() : Promise.reject(new Error('File does not exists')),
 })
 
