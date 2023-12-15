@@ -1,4 +1,4 @@
-import { normalize, sep } from 'node:path'
+import { normalize } from 'node:path'
 import { promisify } from 'node:util'
 
 import Dependencies from '@/src/types/dependencies'
@@ -12,7 +12,7 @@ function mockDependencies(overrides?: Partial<Dependencies>, options?: {
 		release: '11.5.0',
 		fsAccess: () => Promise.resolve(),
 		pathNormalize: normalize,
-		pathSep: sep,
+		pathSep: '/',
 		cpExecFile: async () => {
 			await promisify(process.nextTick)
 
