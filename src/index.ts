@@ -1,7 +1,7 @@
 import { execFile } from 'node:child_process'
 import { access } from 'node:fs/promises'
 import { release } from 'node:os'
-import { normalize, sep } from 'node:path'
+import { normalize } from 'node:path'
 import { platform } from 'node:process'
 import { promisify } from 'node:util'
 
@@ -23,7 +23,7 @@ function checkDiskSpace(directoryPath: string, dependencies: Dependencies = {
 	release: release(),
 	fsAccess: access,
 	pathNormalize: normalize,
-	pathSep: sep,
+	pathSep: '/',
 	cpExecFile: promisify(execFile),
 }): Promise<DiskSpace> {
 	// Note: This function contains other functions in order
