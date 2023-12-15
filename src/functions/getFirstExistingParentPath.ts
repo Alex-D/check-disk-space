@@ -21,7 +21,7 @@ async function getFirstExistingParentPath(directoryPath: string, dependencies: D
 	const maxNumberOfFolders = 2048
 	for (let i = 0; i < maxNumberOfFolders && !parentDirectoryFound; ++i) {
 		const newParentDirectoryPath = dependencies.pathNormalize(parentDirectoryPath + '/..')
-		if (parentDirectoryPath === newParentDirectoryPath) {
+		if (parentDirectoryPath === newParentDirectoryPath || parentDirectoryPath === '.') {
 			return FAILED_TO_FIND_EXISTING_DIRECTORY_VALUE
 		}
 		parentDirectoryPath = newParentDirectoryPath
