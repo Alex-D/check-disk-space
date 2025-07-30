@@ -8,11 +8,10 @@
   ],
   "main": "./dist/check-disk-space.cjs",
   "module": "./dist/check-disk-space.mjs",
-  "types": "./dist/check-disk-space.d.ts",
+  "types": "./dist/check-disk-space.d.cts",
   "exports": {
     "import": "./dist/check-disk-space.mjs",
-    "require": "./dist/check-disk-space.cjs",
-    "types": "./dist/check-disk-space.d.ts"
+    "require": "./dist/check-disk-space.cjs"
   },
   "scripts": {
     "build:lib": "rollup --config",
@@ -20,7 +19,7 @@
     "build": "npm-run-all build:lib build:dts",
     "lint": "eslint . --cache",
     "lint:fix": "eslint --fix .",
-    "typecheck": "tsc --noEmit",
+    "typecheck": "tsc --noEmit && attw --pack",
     "test": "npm-run-all test:coverage lint typecheck",
     "test:unit": "NODE_ENV=test TS_NODE_PROJECT='tsconfig.test.json' ava",
     "test:coverage": "nyc --reporter=lcov --reporter=text npm run test:unit --silent"
@@ -44,6 +43,7 @@
   },
   "devDependencies": {
     "@alex-d/eslint-config": "2.2.0",
+    "@arethetypeswrong/cli": "^0.18.2",
     "@istanbuljs/nyc-config-typescript": "1.0.2",
     "@rollup/plugin-typescript": "11.1.1",
     "@types/node": "16.11.7",

@@ -4,8 +4,12 @@ import config from './rollup.config.mjs'
 
 config.output = [
 	{
-		file: 'dist/check-disk-space.d.ts',
+		file: 'dist/check-disk-space.d.mts',
 		format: 'es',
+	},
+	{
+		file: 'dist/check-disk-space.d.cts',
+		format: 'cjs',
 	},
 ]
 config.plugins.push(dts())
