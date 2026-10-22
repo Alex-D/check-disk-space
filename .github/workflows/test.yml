@@ -32,11 +32,11 @@ jobs:
 
   node-compat:
     needs: test
-    name: "Test compatibility with Node ${{ matrix.node }}"
+    name: "Test compatibility with Node ${{ matrix.node_version }}"
     runs-on: "ubuntu-latest"
     strategy:
       matrix:
-        node:
+        node_version:
           - 18
           - 20
           - 22
@@ -49,6 +49,26 @@ jobs:
 
       - uses: actions/setup-node@v7
         with:
-          node-version: "${{ matrix.node }}"
+          node-version: "${{ matrix.node_version }}"
 
       - run: node demo.mjs
+
+  bun-compat:
+    needs: test
+    name: "Test compatibility with Bun ${{ matrix.bun_version }}"
+    runs-on: "ubuntu-latest"
+    strategy:
+      matrix:
+        bun_version:
+          - 1.3.x
+          - 1.4.x
+    steps:
+      - uses: actions/download-artifact@v8
+        with:
+          name: build
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: "${{ matrix.bun_version }}"
+
+      - run: bun demo.mjs
