@@ -27,7 +27,7 @@ jobs:
           name: build
           path: |
             dist/
-            demo.js
+            demo.mjs
           retention-days: 1
 
   node-compat:
@@ -51,4 +51,4 @@ jobs:
         with:
           node-version: "${{ matrix.node }}"
 
-      - run: node demo.js
+      - run: node demo.mjs

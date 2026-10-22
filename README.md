@@ -6,7 +6,7 @@
 
 ## Introduction
 
-Light multi-platform disk space checker without third party for Node.js.
+A light multi-platform disk space checker without any third party for Node.js.
 
 - Works on Linux, macOS and Windows
 - Take care of mounting points on unix-like systems
@@ -20,31 +20,27 @@ Light multi-platform disk space checker without third party for Node.js.
 ## Usage
 
 ```js
-// ES
 import { checkDiskSpace } from "check-disk-space";
 
-// CommonJS
-const checkDiskSpace = require("check-disk-space").default;
+let yourPath = "";
 
 // On Windows
-checkDiskSpace("C:/your/path").then((diskSpace) => {
-	console.log(diskSpace);
-	// {
-	//     diskPath: 'C:',
-	//     free: 12345678,
-	//     size: 98756432
-	// }
-	// Note: `free` and `size` are in bytes
-});
+yourPath = "C:/your/path";
 
 // On Linux or macOS
-checkDiskSpace("/mnt/mydisk").then((diskSpace) => {
+yourPath = "/mnt/mydisk";
+
+checkDiskSpace(yourPath).then((diskSpace) => {
 	console.log(diskSpace);
 	// {
-	//     diskPath: '/',
+	//     diskPath: 'C:', (or '/')
 	//     free: 12345678,
 	//     size: 98756432
 	// }
 	// Note: `free` and `size` are in bytes
 });
 ```
+
+## Compatibility
+
+- Node 18+
