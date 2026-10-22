@@ -56,7 +56,11 @@ function checkDiskSpace(
 		const filtered = parsed.filter(filter);
 
 		if (filtered.length === 0) {
-			throw new NoMatchError();
+			let errorContext = "No disk matches the path.";
+			if (parsed.length === 0) {
+				errorContext = "Nothing was returned by the command.";
+			}
+			throw new NoMatchError(errorContext);
 		}
 
 		// Needed to skip empty columns on some lines (see AWS AppRunner test case)

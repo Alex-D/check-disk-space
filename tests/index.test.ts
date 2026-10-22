@@ -212,6 +212,22 @@ platforms.forEach((platform) => {
 	});
 });
 
+test("win32: empty command output", async () => {
+	const dependencies = mockDependencies(
+		{
+			platform: "win32",
+		},
+		{
+			cpExecFileOutput: "",
+		},
+	);
+
+	await expect(checkDiskSpace("Z:/shouldfail", dependencies)).rejects.toMatchObject({
+		name: NoMatchError.name,
+		message: "Nothing was returned by the command.",
+	});
+});
+
 test("win32: path did not match any disk", async () => {
 	const dependencies = mockDependencies(
 		{
@@ -222,7 +238,10 @@ test("win32: path did not match any disk", async () => {
 		},
 	);
 
-	await expect(checkDiskSpace("Z:/shouldfail", dependencies)).rejects.toBeInstanceOf(NoMatchError);
+	await expect(checkDiskSpace("Z:/shouldfail", dependencies)).rejects.toMatchObject({
+		name: NoMatchError.name,
+		message: "No disk matches the path.",
+	});
 });
 
 test("win32: invalid path", async () => {
