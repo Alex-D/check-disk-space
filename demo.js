@@ -1,4 +1,4 @@
-const { checkDiskSpace } = require("./dist/check-disk-space.js").default;
+import { checkDiskSpace } from "./dist/check-disk-space.mjs";
 
 const isWindows = process.platform === "win32";
 
