@@ -34,7 +34,7 @@
     "build": "vp pack",
     "dev": "vp pack --watch",
     "dev:all": "pnpm -r --include-workspace-root --parallel dev",
-    "test": "vp test",
+    "test": "vp tests",
     "check": "vp check",
     "prepublishOnly": "vp run build",
     "prepare": "vp config"

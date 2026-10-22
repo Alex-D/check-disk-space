@@ -229,5 +229,5 @@ test("exec has an error", async () => {
 });
 
 test("run without dependencies mock", async () => {
-	await expect(checkDiskSpace(process.platform === "linux" ? "/" : "C:")).resolves.toBeDefined();
+	await expect(checkDiskSpace(process.platform === "win32" ? "C:" : "/")).resolves.toBeDefined();
 });
