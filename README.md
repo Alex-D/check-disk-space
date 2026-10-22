@@ -83,18 +83,16 @@ checkDiskSpace(yourPath).then((diskSpace) => {
 
 ## Migrating from v3.x
 
-### ESM
+Migrates to ESM and does not use `default` export anymore.
 
 ```diff
 - import checkDiskSpace from "check-disk-space";
 + import { checkDiskSpace } from "check-disk-space";
 ```
 
-### CJS (Require)
-
 ```diff
 - const checkDiskSpace = require("check-disk-space").default;
-+ const { checkDiskSpace } = require("check-disk-space");
++ import { checkDiskSpace } from "check-disk-space";
 ```
 
 ## Compatibility
