@@ -41,6 +41,8 @@ A light multi-platform disk space checker without any third party compatible wit
 
 ```js
 import { checkDiskSpace } from "check-disk-space";
+// Or with require
+const { checkDiskSpace } = require("check-disk-space");
 
 let yourPath = "";
 
@@ -78,6 +80,22 @@ checkDiskSpace(yourPath).then((diskSpace) => {
 - `size` (number)
   - in bytes
   - total size of the disk on which the path to check is stored on
+
+## Migrating from v3.x
+
+### ESM
+
+```diff
+- import checkDiskSpace from "check-disk-space";
++ import { checkDiskSpace } from "check-disk-space";
+```
+
+### CJS (Require)
+
+```diff
+- const checkDiskSpace = require("check-disk-space").default;
++ const { checkDiskSpace } = require("check-disk-space");
+```
 
 ## Compatibility
 

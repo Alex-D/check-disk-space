@@ -27,6 +27,7 @@ jobs:
           name: build
           path: |
             dist/
+            demo.cjs
             demo.mjs
           retention-days: 1
 
@@ -52,6 +53,7 @@ jobs:
           node-version: "${{ matrix.node_version }}"
 
       - run: node demo.mjs
+      - run: node demo.cjs
 
   bun-compat:
     needs: test
@@ -72,6 +74,7 @@ jobs:
           bun-version: "${{ matrix.bun_version }}"
 
       - run: bun demo.mjs
+      - run: bun demo.cjs
 
   deno-compat:
     needs: test
@@ -92,3 +95,4 @@ jobs:
           deno-version: "${{ matrix.deno_version }}"
 
       - run: deno --allow-sys --allow-read --allow-env --allow-run demo.mjs
+      - run: deno --allow-sys --allow-read --allow-env --allow-run demo.cjs
