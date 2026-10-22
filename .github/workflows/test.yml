@@ -72,3 +72,23 @@ jobs:
           bun-version: "${{ matrix.bun_version }}"
 
       - run: bun demo.mjs
+
+  deno-compat:
+    needs: test
+    name: "Test compatibility with Deno ${{ matrix.deno_version }}"
+    runs-on: "ubuntu-latest"
+    strategy:
+      matrix:
+        deno_version:
+          - v2.5.x
+          - v2.9.x
+    steps:
+      - uses: actions/download-artifact@v8
+        with:
+          name: build
+
+      - uses: denoland/setup-deno@v2
+        with:
+          deno-version: "${{ matrix.deno_version }}"
+
+      - run: deno --allow-sys --allow-read --allow-env --allow-run demo.mjs

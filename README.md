@@ -44,3 +44,5 @@ checkDiskSpace(yourPath).then((diskSpace) => {
 ## Compatibility
 
 - Node 18+
+- Bun 1.3+
+- Deno 2.5+ (needs `sys`, `read`, `env` and `run` access)
