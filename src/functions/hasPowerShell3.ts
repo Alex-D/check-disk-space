@@ -1,4 +1,4 @@
-import Dependencies from '@/src/types/dependencies'
+import type { Dependencies } from "../types/dependencies.ts";
 
 /**
  * Tell if PowerShell 3 is available based on Windows version
@@ -9,18 +9,19 @@ import Dependencies from '@/src/types/dependencies'
  * @param dependencies - Dependencies Injection Container
  */
 async function hasPowerShell3(dependencies: Dependencies): Promise<boolean> {
-	const major = parseInt(dependencies.release.split('.')[0], 10)
+	const major = parseInt(dependencies.release.split(".")[0], 10);
 
 	if (major <= 6) {
-		return false
+		return false;
 	}
 
 	try {
-		await dependencies.cpExecFile('where', ['powershell'], { windowsHide: true })
-		return true
-	} catch (error) {
-		return false
+		await dependencies.cpExecFile("where", ["powershell"], { windowsHide: true });
+		return true;
+		// oxlint-disable-next-line no-unused-vars
+	} catch (_error) {
+		return false;
 	}
 }
 
-export default hasPowerShell3
+export default hasPowerShell3;

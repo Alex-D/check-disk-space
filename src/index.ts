@@ -1,16 +1,16 @@
-import { execFile } from 'node:child_process'
-import { access } from 'node:fs/promises'
-import { release } from 'node:os'
-import { normalize, sep } from 'node:path'
-import { platform } from 'node:process'
-import { promisify } from 'node:util'
+import { execFile } from "node:child_process";
+import { access } from "node:fs/promises";
+import { release } from "node:os";
+import { normalize, sep } from "node:path";
+import { platform } from "node:process";
+import { promisify } from "node:util";
 
-import InvalidPathError from '@/src/errors/invalidPathError'
-import NoMatchError from '@/src/errors/noMatchError'
-import getFirstExistingParentPath from '@/src/functions/getFirstExistingParentPath'
-import hasPowerShell3 from '@/src/functions/hasPowerShell3'
-import Dependencies from '@/src/types/dependencies'
-import DiskSpace from '@/src/types/diskSpace'
+import InvalidPathError from "./errors/invalidPathError.ts";
+import NoMatchError from "./errors/noMatchError.ts";
+import getFirstExistingParentPath from "./functions/getFirstExistingParentPath.ts";
+import hasPowerShell3 from "./functions/hasPowerShell3.ts";
+import type { Dependencies } from "./types/dependencies.ts";
+import type { DiskSpace } from "./types/diskSpace.ts";
 
 /**
  * Check disk space
@@ -18,14 +18,17 @@ import DiskSpace from '@/src/types/diskSpace'
  * @param directoryPath - The file/folder path from where we want to know disk space
  * @param dependencies - Dependencies container
  */
-function checkDiskSpace(directoryPath: string, dependencies: Dependencies = {
-	platform,
-	release: release(),
-	fsAccess: access,
-	pathNormalize: normalize,
-	pathSep: sep,
-	cpExecFile: promisify(execFile),
-}): Promise<DiskSpace> {
+function checkDiskSpace(
+	directoryPath: string,
+	dependencies: Dependencies = {
+		platform,
+		release: release(),
+		fsAccess: access,
+		pathNormalize: normalize,
+		pathSep: sep,
+		cpExecFile: promisify(execFile),
+	},
+): Promise<DiskSpace> {
 	// Note: This function contains other functions in order
 	//       to wrap them in a common context and make unit tests easier
 
@@ -44,29 +47,29 @@ function checkDiskSpace(directoryPath: string, dependencies: Dependencies = {
 		coefficient: number,
 	): DiskSpace {
 		const parsed = stdout
-			.split('\n') // Split lines
-			.map(line => line.trim()) // Trim all lines
-			.filter(line => line.length !== 0) // Remove empty lines
+			.split("\n") // Split lines
+			.map((line) => line.trim()) // Trim all lines
+			.filter((line) => line.length !== 0) // Remove empty lines
 			.slice(1) // Remove header
-			.map(line => line.split(/\s+(?=[\d/])/)) // Split on spaces to get columns
+			.map((line) => line.split(/\s+(?=[\d/])/)); // Split on spaces to get columns
 
-		const filtered = parsed.filter(filter)
+		const filtered = parsed.filter(filter);
 
 		if (filtered.length === 0) {
-			throw new NoMatchError()
+			throw new NoMatchError();
 		}
 
-		const diskData = filtered[0]
+		const diskData = filtered[0];
 
 		return {
 			diskPath: diskData[mapping.diskPath],
 			free: parseInt(diskData[mapping.free], 10) * coefficient,
 			size: parseInt(diskData[mapping.size], 10) * coefficient,
-		}
+		};
 	}
 
 	/**
-	 * Run the command and do common things between win32 and unix
+	 * Run the command and do common things between win32 and Unix
 	 *
 	 * @param cmd - The command to execute
 	 * @param filter - To filter drives (only used for win32)
@@ -79,21 +82,18 @@ function checkDiskSpace(directoryPath: string, dependencies: Dependencies = {
 		mapping: Record<string, number>,
 		coefficient = 1,
 	): Promise<DiskSpace> {
-		const [
-			file,
-			...args
-		] = cmd
+		const [file, ...args] = cmd;
 
 		/* istanbul ignore if */
 		if (file === undefined) {
-			return Promise.reject(new Error('cmd must contain at least one item'))
+			return Promise.reject(new Error("cmd must contain at least one item"));
 		}
 
 		try {
-			const { stdout } = await dependencies.cpExecFile(file, args, { windowsHide: true })
-			return mapOutput(stdout, filter, mapping, coefficient)
+			const { stdout } = await dependencies.cpExecFile(file, args, { windowsHide: true });
+			return mapOutput(stdout, filter, mapping, coefficient);
 		} catch (error) {
-			return Promise.reject(error)
+			return Promise.reject(error);
 		}
 	}
 
@@ -103,56 +103,52 @@ function checkDiskSpace(directoryPath: string, dependencies: Dependencies = {
 	 * @param directoryPath - The file/folder path from where we want to know disk space
 	 */
 	async function checkWin32(directoryPath: string): Promise<DiskSpace> {
-		if (directoryPath.charAt(1) !== ':') {
-			return Promise.reject(new InvalidPathError(`The following path is invalid (should be X:\\...): ${directoryPath}`))
+		if (directoryPath.charAt(1) !== ":") {
+			return Promise.reject(
+				new InvalidPathError(`The following path is invalid (should be X:\\...): ${directoryPath}`),
+			);
 		}
 
 		const powershellCmd = [
-			'powershell',
-			'Get-CimInstance -ClassName Win32_LogicalDisk | Select-Object Caption, FreeSpace, Size',
-		]
-		const wmicCmd = [
-			'wmic',
-			'logicaldisk',
-			'get',
-			'size,freespace,caption',
-		]
-		const cmd = await hasPowerShell3(dependencies) ? powershellCmd : wmicCmd
+			"powershell",
+			"Get-CimInstance -ClassName Win32_LogicalDisk | Select-Object Caption, FreeSpace, Size",
+		];
+		const wmicCmd = ["wmic", "logicaldisk", "get", "size,freespace,caption"];
+		const cmd = (await hasPowerShell3(dependencies)) ? powershellCmd : wmicCmd;
 
 		return check(
 			cmd,
-			driveData => {
+			(driveData) => {
 				// Only get the drive which match the path
-				const driveLetter = driveData[0]
-				return directoryPath.toUpperCase().startsWith(driveLetter.toUpperCase())
+				const driveLetter = driveData[0];
+				return directoryPath.toUpperCase().startsWith(driveLetter.toUpperCase());
 			},
 			{
 				diskPath: 0,
 				free: 1,
 				size: 2,
 			},
-		)
+		);
 	}
 
 	/**
-	 * Build the check call for unix
+	 * Build the check call for Unix
 	 *
 	 * @param directoryPath - The file/folder path from where we want to know disk space
 	 */
 	async function checkUnix(directoryPath: string): Promise<DiskSpace> {
 		if (!dependencies.pathNormalize(directoryPath).startsWith(dependencies.pathSep)) {
-			return Promise.reject(new InvalidPathError(`The following path is invalid (should start by ${dependencies.pathSep}): ${directoryPath}`))
+			return Promise.reject(
+				new InvalidPathError(
+					`The following path is invalid (should start by ${dependencies.pathSep}): ${directoryPath}`,
+				),
+			);
 		}
 
-		const pathToCheck = await getFirstExistingParentPath(directoryPath, dependencies)
+		const pathToCheck = await getFirstExistingParentPath(directoryPath, dependencies);
 
 		return check(
-			[
-				'df',
-				'-Pk',
-				'--',
-				pathToCheck,
-			],
+			["df", "-Pk", "--", pathToCheck],
 			() => true, // We should only get one line, so we did not need to filter
 			{
 				diskPath: 5,
@@ -160,23 +156,26 @@ function checkDiskSpace(directoryPath: string, dependencies: Dependencies = {
 				size: 1,
 			},
 			1024, // We get sizes in kB, we need to convert that to bytes
-		)
+		);
 	}
-
 
 	// Call the right check depending on the OS
-	if (dependencies.platform === 'win32') {
-		return checkWin32(directoryPath)
+	if (dependencies.platform === "win32") {
+		return checkWin32(directoryPath);
 	}
 
-	return checkUnix(directoryPath)
+	return checkUnix(directoryPath);
 }
 
-export default checkDiskSpace
 export {
-	Dependencies,
-	DiskSpace,
+	// Functions
+	checkDiskSpace,
 	getFirstExistingParentPath,
+
+	// Errors
 	InvalidPathError,
 	NoMatchError,
-}
+};
+
+// Types
+export type { Dependencies, DiskSpace };

@@ -3,6 +3,8 @@ temp/
 node_modules/
 .idea/
 
-.eslintcache
-.nyc_output
-coverage
+/coverage
+/.vitest-attachments
+/tests/__screenshots__
+
+~$*

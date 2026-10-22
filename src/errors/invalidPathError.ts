@@ -1,11 +1,11 @@
 class InvalidPathError extends Error {
-	name = 'InvalidPathError'
+	name = "InvalidPathError";
 
 	constructor(message?: string) {
-		super(message)
+		super(message);
 		// Set the prototype explicitly.
-		Object.setPrototypeOf(this, InvalidPathError.prototype)
+		Object.setPrototypeOf(this, InvalidPathError.prototype);
 	}
 }
 
-export default InvalidPathError
+export default InvalidPathError;

@@ -1,8 +1,8 @@
-const checkDiskSpace = require('./dist/check-disk-space.cjs').default
+const { checkDiskSpace } = require("./dist/check-disk-space.js").default;
 
-const isWindows = process.platform === 'win32'
+const isWindows = process.platform === "win32";
 
-checkDiskSpace(isWindows ? 'C:/' : '/').then((diskSpace) => {
+checkDiskSpace(isWindows ? "C:/" : "/").then((diskSpace) => {
 	// eslint-disable-next-line no-console
-	console.log(diskSpace)
-})
+	console.log(diskSpace);
+});

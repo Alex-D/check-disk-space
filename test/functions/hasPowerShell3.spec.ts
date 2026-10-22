@@ -1,53 +1,65 @@
-import test from 'ava'
+import { expect, test } from "vite-plus/test";
 
-import hasPowerShell3 from '@/src/functions/hasPowerShell3'
-import mockDependencies from '@/test/__helpers__/mockDependencies'
+import hasPowerShell3 from "../../src/functions/hasPowerShell3.ts";
+import mockDependencies from "../__helpers__/mockDependencies.ts";
 
-
-test('windows: release <=6 must NOT have PowerShell 3', async t => {
+test("windows: release <=6 must NOT have PowerShell 3", async () => {
 	const dependencies = mockDependencies({
-		platform: 'win32',
-	})
+		platform: "win32",
+	});
 
-	t.is(await hasPowerShell3({
-		...dependencies,
-		release: '5.0.12',
-	}), false)
+	await expect(
+		hasPowerShell3({
+			...dependencies,
+			release: "5.0.12",
+		}),
+	).resolves.toBe(false);
 
-	t.is(await hasPowerShell3({
-		...dependencies,
-		release: '6.1.0',
-	}), false)
-})
+	await expect(
+		hasPowerShell3({
+			...dependencies,
+			release: "6.1.0",
+		}),
+	).resolves.toBe(false);
+});
 
-test('windows: release 7+ must have PowerShell 3', async t => {
+test("windows: release 7+ must have PowerShell 3", async () => {
 	const dependencies = mockDependencies({
-		platform: 'win32',
-	})
+		platform: "win32",
+	});
 
-	t.is(await hasPowerShell3({
-		...dependencies,
-		release: '7.3.15',
-	}), true)
+	await expect(
+		hasPowerShell3({
+			...dependencies,
+			release: "7.3.15",
+		}),
+	).resolves.toBe(true);
 
-	t.is(await hasPowerShell3({
-		...dependencies,
-		release: '10.3.15',
-	}), true)
+	await expect(
+		hasPowerShell3({
+			...dependencies,
+			release: "10.3.15",
+		}),
+	).resolves.toBe(true);
 
-	t.is(await hasPowerShell3({
-		...dependencies,
-		release: '11.14.0',
-	}), true)
-})
+	await expect(
+		hasPowerShell3({
+			...dependencies,
+			release: "11.14.0",
+		}),
+	).resolves.toBe(true);
+});
 
-test('windows: release 7+ powershell ENOENT', async t => {
-	const dependencies = mockDependencies({
-		platform: 'win32',
-		release: '11.14.0',
-	}, {
-		cpExecFileError: new Error('ENOENT'),
-	})
+test("windows: release 7+ powershell ENOENT", async () => {
+	const dependencies = mockDependencies(
+		{
+			platform: "win32",
+			release: "11.14.0",
+		},
+		{
+			cpExecFileError: new Error("ENOENT"),
+		},
+	);
 
-	t.is(await hasPowerShell3(dependencies), false)
-})
+	await expect(hasPowerShell3(dependencies)).resolves.toBe(false);
+});

@@ -1,11 +1,11 @@
 class NoMatchError extends Error {
-	name = 'NoMatchError'
+	name = "NoMatchError";
 
 	constructor(message?: string) {
-		super(message)
+		super(message);
 		// Set the prototype explicitly.
-		Object.setPrototypeOf(this, NoMatchError.prototype)
+		Object.setPrototypeOf(this, NoMatchError.prototype);
 	}
 }
 
-export default NoMatchError
+export default NoMatchError;

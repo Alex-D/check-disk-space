@@ -1,34 +1,42 @@
-import { normalize } from 'node:path'
-import { promisify } from 'node:util'
+import { normalize } from "node:path";
 
-import Dependencies from '@/src/types/dependencies'
+import type { Dependencies } from "../../src/index.ts";
 
-function mockDependencies(overrides?: Partial<Dependencies>, options?: {
-	cpExecFileOutput?: string
-	cpExecFileError?: Error
-}): Dependencies {
+async function nextTick(): Promise<void> {
+	return new Promise<void>((resolve) => {
+		setTimeout(() => resolve(), 0);
+	});
+}
+
+function mockDependencies(
+	overrides?: Partial<Dependencies>,
+	options?: {
+		cpExecFileOutput?: string;
+		cpExecFileError?: Error;
+	},
+): Dependencies {
 	const dependencies: Dependencies = {
-		platform: 'linux',
-		release: '11.5.0',
+		platform: "linux",
+		release: "11.5.0",
 		fsAccess: () => Promise.resolve(),
 		pathNormalize: normalize,
-		pathSep: '/',
+		pathSep: "/",
 		cpExecFile: async () => {
-			await promisify(process.nextTick)
+			await nextTick();
 
 			if (options?.cpExecFileError !== undefined) {
-				return Promise.reject(options.cpExecFileError)
+				return Promise.reject(options.cpExecFileError);
 			}
 
 			return {
-				stdout: options?.cpExecFileOutput ?? '',
-				stderr: '',
-			}
+				stdout: options?.cpExecFileOutput ?? "",
+				stderr: "",
+			};
 		},
 		...overrides,
-	}
+	};
 
-	return dependencies
+	return dependencies;
 }
 
-export default mockDependencies
+export default mockDependencies;
