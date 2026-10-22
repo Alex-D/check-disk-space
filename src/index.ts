@@ -59,12 +59,18 @@ function checkDiskSpace(
 			throw new NoMatchError();
 		}
 
+		// Needed to skip empty columns on some lines (see AWS AppRunner test case)
+		const columnsCount = parsed.reduce((maxColumnCount, currentLine) => {
+			return Math.max(currentLine.length, maxColumnCount);
+		}, 0);
+
 		const diskData = filtered[0];
+		const indexOffset = diskData.length - columnsCount;
 
 		return {
-			diskPath: diskData[mapping.diskPath],
-			free: parseInt(diskData[mapping.free], 10) * coefficient,
-			size: parseInt(diskData[mapping.size], 10) * coefficient,
+			diskPath: diskData[mapping.diskPath + indexOffset],
+			free: parseInt(diskData[mapping.free + indexOffset], 10) * coefficient,
+			size: parseInt(diskData[mapping.size + indexOffset], 10) * coefficient,
 		};
 	}
 

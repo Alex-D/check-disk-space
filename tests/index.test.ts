@@ -123,7 +123,7 @@ const platformFixtures = {
 		{
 			title: "Ubuntu: russian locale",
 			release: "5.1.0",
-			path: "/media/Games",
+			path: "/media/Games/subfolder",
 			execOutput: `
           Файл.система   1024-блоков Использовано Доступно Вместимость Cмонтировано в
           /dev/sdc         240234168    188729228 39278628         83% /media/Games
@@ -134,12 +134,52 @@ const platformFixtures = {
 				size: 240234168 * 1024,
 			},
 		},
+		{
+			title: "AWS AppRunner",
+			release: "5.1.0",
+			path: "/",
+			execOutput: `
+          Filesystem     1024-blocks  Used Available Capacity Mounted on
+                              3355850    34   3179368       1% /
+           tmpfs                65536     0     65536       0% /dev
+           shm                 530264     0    530264       0% /dev/shm
+           tmpfs               530264     0    530264       0% /sys/fs/cgroup
+           /dev/vdd           3355850    34   3179368       1% /etc/hosts
+           tmpfs               530264     0    530264       0% /sys/firmware
+           tmpfs               530264     0    530264       0% /proc/scsi
+      `,
+			result: {
+				diskPath: "/",
+				free: 3179368 * 1024,
+				size: 3355850 * 1024,
+			},
+		},
+		{
+			title: "AWS AppRunner (no filesystem name)",
+			release: "5.1.0",
+			path: "/media/Games",
+			execOutput: `
+          Filesystem     1024-blocks  Used Available Capacity Mounted on
+                              3355850    34   3179368       1% /
+           tmpfs                65536     0     65536       0% /dev
+           shm                 530264     0    530264       0% /dev/shm
+           tmpfs               530264     0    530264       0% /sys/fs/cgroup
+           /dev/vdd           3355850    34   3179368       1% /etc/hosts
+           tmpfs               530264     0    530264       0% /sys/firmware
+           tmpfs               530264     0    530264       0% /proc/scsi
+      `,
+			result: {
+				diskPath: "/",
+				free: 3179368 * 1024,
+				size: 3355850 * 1024,
+			},
+		},
 	],
 	darwin: [
 		{
 			title: "macOS",
 			release: "5.1.0",
-			path: "/home/jacquie",
+			path: "/home/username",
 			execOutput: `
           Filesystem    1024-blocks     Used Available Capacity  Mounted on
           /dev/disk0s2    145961032 20678788 125026244    15%    /home
