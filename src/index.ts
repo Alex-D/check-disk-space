@@ -29,7 +29,7 @@ function checkDiskSpace(
 		cpExecFile: promisify(execFile),
 	},
 ): Promise<DiskSpace> {
-	// Note: This function contains other functions in order
+	// Note: This function contains other functions
 	//       to wrap them in a common context and make unit tests easier
 
 	/**
@@ -119,7 +119,7 @@ function checkDiskSpace(
 		return check(
 			cmd,
 			(driveData) => {
-				// Only get the drive which match the path
+				// Only get the drive that matches the path
 				const driveLetter = driveData[0];
 				return directoryPath.toUpperCase().startsWith(driveLetter.toUpperCase());
 			},
